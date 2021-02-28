@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Вы вышли из системы{% endblock %}
+{% load static %}
+{% block stylesheet %}
+   <link rel="stylesheet" href="{% static 'pages/form.css'%}">
+{% endblock %}
+{% block content %}
+<div class="main container">
+        <div class="form-container">
+            <div class="form__info-text">
+                Вы вышли из своей учётной записи. Ждём вас снова!
+            </div>
+    </div>
+</div>
+{% endblock %}

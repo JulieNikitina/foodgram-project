@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}
+{% if recipe %}
+<title>Редактировать рецепт</title>
+{% else %}
+<title>Создание рецепта</title>
+{% endif %}
+{% endblock %}
+{% load static %}
+{% block stylesheet %}
+   <link rel="stylesheet" href="{% static 'pages/form.css'%}">
+{% endblock %}
+{% block content %}
+{% load user_filters %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Создание рецепта</h1>
+    </div>
+    <div class="form-container">
+        <form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form__group">
+                <label for='{{ field.id_for_label }}' class="form__label">
+                    {{ field.label }}{% if field.field.required %}
+                    <span class='required'>*</span>{% endif %}
+                </label>
+                <div class="form__field-group">
+                    {{ field|addclass:"form__input" }}
+                    {% if form.errors %}
+                    {% for error in field.errors %}
+                    <span class="form__error">{{ error|escape }}</span>
+                    {% endfor %}
+                    {% endif %}
+                    {% if field.help_text %}
+                    <small id='{{ field.id_for_label }}-help'>
+                        {{ field.help_text|safe }}
+                    </small>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="form__footer">
+                <button class="button button_style_blue">
+                    {% if recipe %}
+                    Изменить рецепт
+                    {% else %}
+                    Создать рецепт
+                    {% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/config/config.js'%}"></script>
+    <script src="{% static 'js/components/Header.js'%}"></script>
+    <script src="{% static '/js/utils/debouncing.js'%}"></script>
+    <script src="{% static 'js/api/Api.js'%}"></script>
+    <script src="{% static 'yp/formRecipe.js' %}"></script>
+{% endblock %}

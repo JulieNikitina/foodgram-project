@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} Свежие рецепты {% endblock %}</title>
+    {% block stylesheet %}
+    <!-- Стили -->
+    {% endblock %}
+</head>
+<body class="body">
+<header class="header">
+    {% include 'utils/nav.html' %}
+</header>
+<main class="main container">
+    {% block content %}
+    <!-- Содержимое страницы -->
+    {% endblock content %}
+</main>
+{% include 'utils/footer.html' %}
+{% block scripts %}
+    <!-- Скрипты -->
+{% endblock scripts %}
+</body>
+</html>
