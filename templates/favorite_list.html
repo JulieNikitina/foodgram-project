@@ -12,7 +12,9 @@
     <h1 class="main__title"> Избранное </h1>
 </div>
 {% if paginator.count == 0 %}
-у вас нет избранных рецептов
+<div class="custom-center-block">
+    <p class="custom-text-block"> У вас нет избранных рецептов </p>
+</div>
 {% else %}
 <div class="card-list">
     {% for recipe in page %}

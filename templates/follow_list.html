@@ -4,6 +4,7 @@
 {% load static %}
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static 'pages/myFollow.css'%}">
+<link rel="stylesheet" href="{% static 'pages/index.css'%}">
 {% endblock %}
 {% block content %}
 {% csrf_token %}
@@ -11,7 +12,9 @@
     <h1 class="main__title"> Мои подписки </h1>
 </div>
 {% if paginator.count == 0 %}
-Вы ни на кого не подписаны.
+<div class="custom-center-block">
+    <p class="custom-text-block"> Вы ни на кого не подписаны </p>
+</div>
 {% else %}
 <div class="card-list">
     {% for author in page %}
