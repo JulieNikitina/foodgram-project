@@ -6,13 +6,14 @@
    <link rel="stylesheet" href="{% static 'pages/index.css'%}">
 {% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="main__header">
     <h1 class="main__title">Рецепты</h1>
     {% include 'utils/menu.html' %}
 </div>
 <div class="card-list">
     {% for recipe in page %}
-    <div class="card" data-id="120">
+    <div class="card" data-id={{recipe.id}}>
         {% load thumbnail %}
         {% thumbnail recipe.image "696x696" crop="center" upscale=True as im %}
         <a href="{% url 'recipe' recipe.author.username recipe.id %}" class="link" target="_blank"><img src="{{ im.url }}" class="card__image"></a>
@@ -43,6 +44,7 @@
 {% if page.has_other_pages %}
 {% include "utils/paginator.html" with items=page paginator=paginator%}
 {% endif %}
+{% endblock %}
 {% block scripts %}
     <script src="{% static 'js/components/MainCards.js'%}"></script>
     <script src="{% static 'js/components/Purchases.js'%}"></script>
@@ -59,7 +61,6 @@
         <script src="{% static 'yp/indexNotAuth.js'%}"></script>
     {% endif %}
 {% endblock scripts %}
-{% endblock %}
 
 
 
