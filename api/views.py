@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from api.serializers import FollowSerializer, FavoriteSerializer
-from recipes.models import User, Follow, Favorite, Recipe
+from api.serializers import FollowSerializer, FavoriteSerializer, IngredientSerializer
+from recipes.models import User, Follow, Favorite, Recipe, Ingredient
 
 
 class MixinSet(
@@ -46,6 +46,13 @@ class FavoriteViewSet(MixinSet):
         favorite = get_object_or_404(Favorite, user=self.request.user, recipe=Recipe.objects.get(id=recipe_id))
         favorite.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = IngredientSerializer
+    queryset = Ingredient.objects.all()
+    filter_backends = (filters.SearchFilter,)
+    search_field = ('^name',)
 
 
 

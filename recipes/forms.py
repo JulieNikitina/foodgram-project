@@ -6,7 +6,13 @@ from .models import Recipe
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ['name', 'image', 'recipe_text', 'ingredients', 'category', 'time_for_cooking']
+        fields = (
+            'title',
+            'tags',
+            'recipe_text',
+            'image'
+        )
+        widgets = {'tags': forms.CheckboxSelectMultiple()}
 
 
 

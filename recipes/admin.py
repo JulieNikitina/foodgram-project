@@ -1,17 +1,17 @@
 from django.contrib import admin
-from .models import Recipe, Category, User, Follow, Favorite
+from .models import Recipe, Tag, Follow, Favorite, Purchase, RecipeIngredient, Ingredient
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'author', 'name', 'image', 'recipe_text', 'ingredients', 'category', 'time_for_cooking')
+    list_display = ('pk', 'author', 'title', 'image', 'recipe_text', 'ingredients', 'category', 'time_for_cooking')
     search_fields = ('ingredients',)
     list_filter = ('pub_date', 'author', 'name', 'category')
     empty_value_display = '-пусто-'
 
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('slug', 'title')
-    search_fields = ('slug',)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('title', 'color')
+    search_fields = ('title',)
     empty_value_display = '-пусто-'
 
 
@@ -25,7 +25,25 @@ class FavoriteAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Follow, FollowAdmin)
+class PurchaseAdmin(admin.ModelAdmin):
+    list_display = ('user', 'recipe')
+    empty_value_display = '-пусто-'
+
+
+class RecipeIngredientAdmin(admin.ModelAdmin):
+    list_display = ('recipe', 'ingredient')
+    empty_value_display = '-пусто-'
+
+
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ('title', 'unit')
+    empty_value_display = '-пусто-'
+
+
 admin.site.register(Favorite, FavoriteAdmin)
+admin.site.register(Follow, FollowAdmin)
+admin.site.register(Ingredient, IngredientAdmin)
+admin.site.register(Purchase, PurchaseAdmin)
+admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(RecipeIngredient, RecipeIngredientAdmin)
+admin.site.register(Tag, TagAdmin)
