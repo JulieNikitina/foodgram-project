@@ -14,8 +14,6 @@ def save_recipe(request, form):
             recipe.author = request.user
             recipe.save()
             ingredients = get_ingredients(request.POST)
-            print(ingredients)
-            print(recipe)
             amounts = convert_ingredients(ingredients, recipe)
             RecipeIngredient.objects.bulk_create(amounts)
             form.save_m2m()
@@ -25,7 +23,6 @@ def save_recipe(request, form):
 
 
 def get_ingredients(post):
-    print(post)
     ingredients = {}
     for key, name in post.items():
         if key.startswith("nameIngredient"):
@@ -40,5 +37,20 @@ def convert_ingredients(ingredients, recipe):
         amount = Decimal(quantity.replace(',', '.'))
         ingredient = get_object_or_404(Ingredient, title=title)
         elems.append(
-            RecipeIngredient(recipe=recipe, ingredient=ingredient, quantity=amount))
+            RecipeIngredient(
+                recipe=recipe,
+                ingredient=ingredient,
+                quantity=amount)
+        )
     return elems
+
+
+def get_tags(request):
+    tags = set()
+    if 'tags' in request.GET:
+        tags = set(request.GET.getlist('tags'))
+    return tags
+
+
+
+

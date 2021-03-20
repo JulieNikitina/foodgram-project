@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block title %}Страница пользователя {{ author.name }}{% endblock %}
-{% block header %}Страница пользователя {{ author.name }}{% endblock %}
 {% block content %}
 {% load static %}
 {% block stylesheet %}
@@ -8,7 +7,9 @@
 {% endblock %}
 {% csrf_token %}
 <div class="main__header">
-    <h1 class="main__title">{{ author.username }}</h1>
+    <h1 class="main__title"> {{ author.username }}</h1>
+    {% include 'utils/tags.html' %}
+
 </div>
 <div class="author-subscribe" data-author={{author.id}}>
     {% if request.user.id != author.id %}

@@ -1,0 +1,11 @@
+{% load recipes_filters %}
+<ul class="tags">
+    {% for tag in all_tags %}
+        <li class="tags__item">
+            <a id="{{ tag.title }}"
+               class="tags__checkbox tags__checkbox_style_{{ tag.color }}{% if tag.title in tags %} tags__checkbox_active{% endif %}"
+               href="{% if tag.title in tags %}{% remove_get_params request tags tag.title %}{% else %}{% get_params request.get_full_path tag.title %}{% endif %}"></a>
+            <span class="tags__label">{{ tag.title }}</span>
+        </li>
+    {% endfor %}
+</ul>

@@ -10,12 +10,11 @@
 {% csrf_token %}
 <div class="main__header">
     <h1 class="main__title">Рецепты</h1>
-    {% include 'utils/menu.html' %}
+    {% include 'utils/tags.html' %}
 </div>
 <div class="card-list">
     {% for recipe in page %}
     {% include "utils/recipe_card.html" %}
-
     {% endfor %}
 </div>
 {% if page.has_other_pages %}

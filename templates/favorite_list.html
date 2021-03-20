@@ -8,7 +8,7 @@
 {% csrf_token %}
 <div class="main__header">
     <h1 class="main__title"> Избранное </h1>
-    {% include 'utils/menu.html' %}
+    {% include 'utils/tags.html' %}
 </div>
 {% if paginator.count == 0 %}
 <div class="custom-center-block">

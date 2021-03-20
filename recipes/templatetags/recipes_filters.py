@@ -43,3 +43,24 @@ def more_recipes(author):
         return ''
 
 
+@register.simple_tag
+def get_params(url, tag):
+    if '?' in url:
+        return f'{url}&tags={tag}'
+    return f'{url}?tags={tag}'
+
+
+@register.simple_tag
+def remove_get_params(request, tags=None, param=''):
+    tags = list(tags)
+    tags.remove(param)
+    params = '&'.join(f'tags={tag}' for tag in tags)
+    if 'page' in request.GET:
+        path = str(request.get_full_path())
+        params_page = path.split('&')
+        if len(params) > 0:
+            return f'{params_page[0]}&{params}'
+        else:
+            return f"{params_page[0]}"
+    return f'?{params}'
+
