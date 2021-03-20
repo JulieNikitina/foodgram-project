@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Страница рецепта {{ recipe.name }}{% endblock %}
-{% block header %}Страница рецепта {{ recipe.name }}{% endblock %}
+{% block title %} Страница рецепта {{ recipe.name }}{% endblock %}
 {% load static %}
 {% block stylesheet %}
    <link rel="stylesheet" href="{% static 'pages/single.css'%}">
 {% endblock %}
 {% block content %}
-{% include 'utils/recipe_card.html' %}
+{% include 'utils/recipe_single.html' %}
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/components/Purchases.js'%}"></script>

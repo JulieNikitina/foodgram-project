@@ -11,54 +11,14 @@ User = get_user_model()
 
 class Ingredient(models.Model):
     title = models.TextField('наименование ингредиента', max_length=150)
-    unit = models.TextField('единицы измерения', max_length=10)
+    dimension = models.TextField('единицы измерения', max_length=10)
 
     class Meta:
-        ordering = ('name',)
+        ordering = ('title',)
         verbose_name = 'ингредиент'
 
     def __str__(self):
-        return f'{self.name}, {self.unit}'
-
-
-class Recipe(models.Model):
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='recipes',
-        verbose_name='автор',
-    )
-    title = models.TextField('название', max_length=30, blank=False, null=False)
-    image = models.ImageField(
-        upload_to='recipes/',
-        blank=True, null=True,
-        verbose_name='Изображение',
-        help_text='Загрузите изображение',
-    )
-    slug = AutoSlugField(populate_from='name', allow_unicode=True)
-    recipe_text = models.TextField('рецепт', null=False, blank=False)
-    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient', verbose_name='ингредиенты')
-    tag = models.ManyToManyField('Tag', related_name='recipes', verbose_name='теги')
-    time_for_cooking = models.PositiveSmallIntegerField('время приготовления')
-    pub_date = models.DateTimeField('date published', auto_now_add=True)
-
-    class Meta:
-        ordering = ['-pub_date']
-
-    def __str__(self):
-        return f'{self.name}: {self.recipe_text[0:10]}'
-
-
-class RecipeIngredient(models.Model):
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients_amount')
-    quantity = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(1)])
-
-    class Meta:
-        unique_together = ('recipe', 'ingredient')
-
-    def __str__(self):
-        return f'{self.recipe}:{self.ingredient}'
+        return f'{self.title}, {self.dimension}'
 
 
 class Tag(models.Model):
@@ -71,6 +31,47 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Recipe(models.Model):
+    name = models.TextField('название', max_length=30, blank=False, null=False)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='recipes',
+        verbose_name='автор',
+    )
+    tags = models.ManyToManyField(Tag, related_name='recipes', verbose_name='теги')
+    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient', verbose_name='ингредиенты')
+    image = models.ImageField(
+        upload_to='recipes/',
+        blank=True, null=True,
+        verbose_name='Изображение',
+        help_text='Загрузите изображение',
+    )
+    slug = AutoSlugField(populate_from='name', allow_unicode=True, unique=True,
+                         editable=True, verbose_name='slug')
+    recipe_text = models.TextField('рецепт', null=False, blank=False)
+    time_for_cooking = models.PositiveSmallIntegerField('время приготовления')
+    pub_date = models.DateTimeField('date published', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-pub_date']
+
+    def __str__(self):
+        return f'{self.name}: {self.recipe_text[0:10]}'
+
+
+class RecipeIngredient(models.Model):
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='amounts')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='amounts')
+    quantity = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(1)])
+
+    class Meta:
+        unique_together = ('recipe', 'ingredient')
+
+    def __str__(self):
+        return f'{self.recipe}:{self.ingredient}'
 
 
 class Follow(models.Model):
@@ -116,23 +117,3 @@ class Purchase(models.Model):
 
     class Meta:
         unique_together = ['user', 'recipe']
-
-# class Comment(models.Model):
-#     recipe = models.ForeignKey(
-#         Recipe,
-#         on_delete=models.CASCADE,
-#         related_name='comments',
-#     )
-#     author = models.ForeignKey(
-#         User,
-#         on_delete=models.CASCADE,
-#         related_name='comments',
-#     )
-#     text = models.TextField('текст', help_text='Напишите ваш комментарий')
-#     created = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         date = self.created
-#         author = self.author
-#         cut_text = self.text[0:10]
-#         return f'{author}.{date}.{cut_text}'

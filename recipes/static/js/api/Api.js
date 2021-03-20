@@ -47,7 +47,7 @@ class Api {
       })
   }
   addSubscriptions(id) {
-    return fetch(`/subscriptions/`, {
+    return fetch(`/api/subscriptions/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ class Api {
       })
   }
   removeSubscriptions (id) {
-    return fetch(`/subscriptions/${id}/`, {
+    return fetch(`/api/subscriptions/${id}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ class Api {
       })
   }
   addFavorites (id)  {
-    return fetch(`/favorites/`, {
+    return fetch(`/api/favorites/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ class Api {
         })
   }
   removeFavorites (id) {
-    return fetch(`/favorites/${id}/`, {
+    return fetch(`/api/favorites/${id}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ class Api {
       })
   }
     getIngredients  (text)  {
-        return fetch(`/ingredients?query=${text}`, {
+        return fetch(`/api/ingredients/?search=${text}`, {
             headers: {
                 'Content-Type': 'application/json'
             }

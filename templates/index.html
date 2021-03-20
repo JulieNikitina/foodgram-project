@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Свежие рецепты{% endblock %}
 {% block header %}Последние добавленные рецепты{% endblock %}
+{% load recipes_filters %}
 {% load static %}
 {% block stylesheet %}
    <link rel="stylesheet" href="{% static 'pages/index.css'%}">
@@ -13,34 +14,8 @@
 </div>
 <div class="card-list">
     {% for recipe in page %}
-    <div class="card" data-id={{recipe.id}}>
-        {% load thumbnail %}
-        {% thumbnail recipe.image "696x696" crop="center" upscale=True as im %}
-        <a href="{% url 'recipe' recipe.author.username recipe.id %}" class="link" target="_blank"><img src="{{ im.url }}" class="card__image"></a>
-        {% endthumbnail %}
-        <div class="card__body">
-            <a class="card__title link" href="{% url 'recipe' recipe.author.username recipe.id %}" target="_blank">{{ recipe.name }}</a>
-            <ul class="card__items">
-                <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
-                <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
-            </ul>
-            <div class="card__items card__items_column">
-                <p class="card__text"><span class="icon-time"></span> {{ recipe.time_for_cooking }}.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href='{% url "profile" recipe.author.username %}' style="color: black">{{ recipe.author }}</a></p>
-            </div>
-        </div>
-        <div class="card__footer">
-            <button class="button button_style_light-blue" name="purchases" data-out>
-                <span class="icon-plus button__icon"></span> Добавить в покупки
-            </button>
-             {% if request.user in recipe.user %}
-             <button class="button button_style_none" name="favorites"><span class="icon-favorite"></span></button>
-            {% else %}
-            <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span></button>
-            {% endif %}
-        </div>
-    </div>
+    {% include "utils/recipe_card.html" %}
+
     {% endfor %}
 </div>
 {% if page.has_other_pages %}

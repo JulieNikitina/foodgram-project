@@ -9,6 +9,6 @@ router.register('favorites', FavoriteViewSet, basename='favorite')
 router.register('ingredients', IngredientViewSet, basename='ingredients')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
 

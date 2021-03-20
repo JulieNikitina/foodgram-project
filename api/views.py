@@ -1,3 +1,7 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.shortcuts import get_list_or_404
+from django.views.generic.base import View
 from rest_framework import filters, mixins, viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
@@ -52,7 +56,7 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
     filter_backends = (filters.SearchFilter,)
-    search_field = ('^name',)
+    search_field = ('title',)
 
 
 

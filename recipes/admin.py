@@ -3,9 +3,8 @@ from .models import Recipe, Tag, Follow, Favorite, Purchase, RecipeIngredient, I
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'author', 'title', 'image', 'recipe_text', 'ingredients', 'category', 'time_for_cooking')
-    search_fields = ('ingredients',)
-    list_filter = ('pub_date', 'author', 'name', 'category')
+    list_display = ('pk', 'slug', 'author', 'name', 'image', 'recipe_text', 'time_for_cooking')
+    list_filter = ('pub_date', 'author', 'name',)
     empty_value_display = '-пусто-'
 
 
@@ -36,7 +35,7 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('title', 'unit')
+    list_display = ('title', 'dimension')
     empty_value_display = '-пусто-'
 
 
