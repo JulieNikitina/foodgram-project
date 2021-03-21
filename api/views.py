@@ -9,8 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from api.serializers import FollowSerializer, FavoriteSerializer, IngredientSerializer
-from recipes.models import User, Follow, Favorite, Recipe, Ingredient
+from api.serializers import FollowSerializer, FavoriteSerializer, IngredientSerializer, PurchaseSerializer
+from recipes.models import User, Follow, Favorite, Recipe, Ingredient, Purchase
 
 
 class MixinSet(
@@ -57,6 +57,21 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Ingredient.objects.all()
     filter_backends = (filters.SearchFilter,)
     search_field = ('title',)
+
+
+class PurchaseViewSet(MixinSet):
+    serializer_class = PurchaseSerializer
+    queryset = Purchase.objects.all()
+
+    def perform_create(self, serializer):
+        recipe_id = self.request.data['id']
+        serializer.save(user=self.request.user, recipe=Recipe.objects.get(id=recipe_id))
+
+    def destroy(self, request, *args, **kwargs):
+        recipe_id = kwargs['pk']
+        purchase = get_object_or_404(Purchase, user=self.request.user, recipe=Recipe.objects.get(id=recipe_id))
+        purchase.delete()
+        return Response(data={'success': True}, status=status.HTTP_200_OK)
 
 
 

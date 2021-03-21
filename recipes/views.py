@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from .models import Recipe, Tag, User, Follow, Ingredient, RecipeIngredient, Favorite
+from .models import Recipe, Tag, User, Follow, Ingredient, RecipeIngredient, Favorite, Purchase
 from .forms import RecipeForm
 from .utils import save_recipe, get_tags
 
@@ -17,10 +18,16 @@ def index(request):
         recipes = Recipe.objects.filter(tags__title__in=tags).distinct()
 
     favorites_list = None
+    purchase_list = None
     if not request.user.is_anonymous:
         user = request.user
         favorites_list = (
             Favorite.objects.filter(user=user).values_list(
+                'recipe',
+                flat=True)
+        )
+        purchase_list = (
+            Purchase.objects.filter(user=user).values_list(
                 'recipe',
                 flat=True)
         )
@@ -34,6 +41,7 @@ def index(request):
         'favorite_list': favorites_list,
         'page': page,
         'paginator': paginator,
+        'purchase_list': purchase_list,
         'tags': tags}
 
     return render(request, 'index.html', context)
@@ -41,7 +49,25 @@ def index(request):
 
 def recipe_view(request, slug):
     recipe = get_object_or_404(Recipe.objects.all(), slug=slug)
-    return render(request, 'recipe.html', {'recipe': recipe})
+    user = request.user
+    print(user.shopping_list.count())
+    following = Follow.objects.filter(
+        user=user,
+        author=recipe.author.id
+    ).exists()
+    purchase_list = (
+        Purchase.objects.filter(user=user).values_list(
+            'recipe',
+            flat=True)
+    )
+    context = {
+        'following': following,
+        'purchase_list' : purchase_list,
+        'recipe': recipe}
+    return render(
+        request,
+        'recipe.html',
+        context)
 
 
 @login_required
@@ -98,6 +124,12 @@ def profile(request, username):
         author=author
     ).exists()
 
+    purchase_list = (
+        Purchase.objects.filter(user=user).values_list(
+            'recipe',
+            flat=True)
+    )
+
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -107,6 +139,7 @@ def profile(request, username):
         'following': following,
         'page': page,
         'paginator': paginator,
+        'purchase_list': purchase_list,
         'tags': tags,
     }
     return render(request, 'profile.html', context)
@@ -142,18 +175,68 @@ def favorite_list(request):
         Favorite.objects.filter(user=user).values_list('recipe', flat=True)
     )
 
+    purchase_list = (
+        Purchase.objects.filter(user=user).values_list(
+            'recipe',
+            flat=True)
+    )
+    purchase_counter = len(purchase_list)
+
     paginator = Paginator(favorites, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
     context = {
         'all_tags': all_tags,
+        'purchase_counter': purchase_counter,
+        'purchase_list':  purchase_list,
         'favorite_list': favorites_list,
         'page': page,
         'paginator': paginator,
         'tags': tags,
     }
     return render(request, 'favorite_list.html', context)
+
+
+def purchase_list(request):
+    user = request.user
+    cart = Purchase.objects.filter(user=user)
+    recipes = Recipe.objects.filter(shopping_list__in=cart)
+    purchase_counter = len(recipes)
+
+    context = {
+        'purchase_counter': purchase_counter,
+        'purchase_list': cart,
+        'recipes': recipes,
+    }
+    return render(request, 'purchase_list.html', context)
+
+
+@login_required
+def download_purchase_list(request):
+    recipe_ingredients = (RecipeIngredient.objects
+                          .filter(recipe__shopping_list__user=request.user)
+                          .select_related('ingredient'))
+    purchase_list = {}
+    for elem in recipe_ingredients:
+        title = elem.ingredient.title
+        dimension = elem.ingredient.dimension
+        quantity = elem.quantity
+        if not purchase_list.get(title):
+            purchase_list[title] = [quantity, dimension]
+        else:
+            purchase_list[title] = [purchase_list[title][0] + quantity, dimension]
+    if purchase_list:
+        file_data = [f'{k.capitalize()}: {v[0]} {v[1]}\n'
+                     for k, v in purchase_list.items()]
+        response = HttpResponse(
+            file_data,
+            content_type='application/text charset=utf-8'
+        )
+        response['Content-Disposition'] = ('attachment; '
+                                           'filename="purchase_list.txt"')
+        return response
+    return redirect('index')
 
 
 def page_not_found(request, exception):

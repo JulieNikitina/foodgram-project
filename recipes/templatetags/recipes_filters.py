@@ -64,3 +64,8 @@ def remove_get_params(request, tags=None, param=''):
             return f"{params_page[0]}"
     return f'?{params}'
 
+
+@register.simple_tag
+def cart_counter(user):
+    return user.shopping_list.count()
+
