@@ -76,6 +76,7 @@ DATABASES = {
 #     }
 # }
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': ('django.contrib.auth.password_validation.'
@@ -94,6 +95,7 @@ AUTH_PASSWORD_VALIDATORS = [
                  'NumericPasswordValidator'),
     },
 ]
+
 
 LANGUAGE_CODE = 'ru'
 

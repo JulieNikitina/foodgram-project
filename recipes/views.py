@@ -50,19 +50,27 @@ def index(request):
 def recipe_view(request, slug):
     recipe = get_object_or_404(Recipe.objects.all(), slug=slug)
     user = request.user
-    print(user.shopping_list.count())
     following = Follow.objects.filter(
         user=user,
         author=recipe.author.id
     ).exists()
+
     purchase_list = (
         Purchase.objects.filter(user=user).values_list(
             'recipe',
             flat=True)
     )
+
+    favorite_list = (
+        Favorite.objects.filter(user=user).values_list(
+            'recipe',
+            flat=True)
+    )
+
     context = {
+        'favorite_list': favorite_list,
         'following': following,
-        'purchase_list' : purchase_list,
+        'purchase_list': purchase_list,
         'recipe': recipe}
     return render(
         request,
@@ -106,9 +114,21 @@ def recipe_edit(request, slug):
     return render(request, 'recipe_form.html', context)
 
 
+@login_required()
+def recipe_delete(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    if recipe.author == request.user:
+        recipe.delete()
+    return redirect('index')
+
+
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     recipes = Recipe.objects.filter(author=author)
+
+    favorite_list = None
+    purchase_list = None
+    following = None
 
     tags = get_tags(request)
     all_tags = Tag.objects.all()
@@ -117,18 +137,24 @@ def profile(request, username):
             author=author,
             tags__title__in=tags
         ).distinct()
+    if not request.user.is_anonymous:
+        user = request.user
+        following = Follow.objects.filter(
+            user=user,
+            author=author
+        ).exists()
 
-    user = request.user
-    following = Follow.objects.filter(
-        user=user,
-        author=author
-    ).exists()
+        purchase_list = (
+            Purchase.objects.filter(user=user).values_list(
+                'recipe',
+                flat=True)
+        )
 
-    purchase_list = (
-        Purchase.objects.filter(user=user).values_list(
-            'recipe',
-            flat=True)
-    )
+        favorite_list = (
+            Favorite.objects.filter(user=user).values_list(
+                'recipe',
+                flat=True)
+        )
 
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
@@ -136,6 +162,7 @@ def profile(request, username):
     context = {
         'all_tags': all_tags,
         'author': author,
+        'favorite_list': favorite_list,
         'following': following,
         'page': page,
         'paginator': paginator,
@@ -242,13 +269,13 @@ def download_purchase_list(request):
 def page_not_found(request, exception):
     return render(
         request,
-        "misc/404.html",
-        {"path": request.path},
+        'misc/404.html',
+        {'path': request.path},
         status=404
     )
 
 
 def server_error(request):
-    return render(request, "misc/500.html", status=500)
+    return render(request, 'misc/500.html', status=500)
 
 
