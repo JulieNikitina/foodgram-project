@@ -1,6 +1,6 @@
 from django import template
 
-from recipes.models import Tag, Recipe, Favorite
+from recipes.models import Recipe, Tag
 
 register = template.Library()
 
@@ -13,7 +13,9 @@ def tag_id(tag_title):
 
 @register.filter()
 def tag_color(tag_title):
-    color = Tag.objects.filter(title=tag_title).values_list('color', flat=True)[0]
+    color = Tag.objects.filter(
+        title=tag_title
+    ).values_list('color', flat=True)[0]
     return color
 
 
@@ -26,7 +28,7 @@ def recipes_by(author):
 def more_recipes(author):
     values = ['рецепт', 'рецепта', 'рецептов']
     value = ''
-    count = Recipe.objects.all().count()
+    count = Recipe.objects.filter(author=author).count()
     more = count - 3
     number = abs(int(more))
     a = number % 10
@@ -37,7 +39,7 @@ def more_recipes(author):
         elif (a >= 2) and (a <= 4) and ((b < 10) or (b >= 20)):
             value = values[1]
         else:
-            value = values[1]
+            value = values[2]
         return f'Еще {more} {value}'
     else:
         return ''
@@ -68,4 +70,3 @@ def remove_get_params(request, tags=None, param=''):
 @register.simple_tag
 def cart_counter(user):
     return user.shopping_list.count()
-

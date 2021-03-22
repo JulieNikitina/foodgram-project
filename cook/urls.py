@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.contrib.flatpages import views
 from django.urls import include, path
 
-
 urlpatterns = [
     path('about/', include('django.contrib.flatpages.urls')),
     path(

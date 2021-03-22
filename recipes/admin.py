@@ -1,9 +1,19 @@
 from django.contrib import admin
-from .models import Recipe, Tag, Follow, Favorite, Purchase, RecipeIngredient, Ingredient
+
+from .models import (Favorite, Follow, Ingredient, Purchase, Recipe,
+                     RecipeIngredient, Tag)
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'slug', 'author', 'name', 'image', 'recipe_text', 'time_for_cooking')
+    list_display = (
+        'pk',
+        'slug',
+        'author',
+        'name',
+        'image',
+        'recipe_text',
+        'time_for_cooking'
+    )
     list_filter = ('pub_date', 'author', 'name',)
     empty_value_display = '-пусто-'
 

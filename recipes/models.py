@@ -1,10 +1,8 @@
-import string
-
+from autoslug import AutoSlugField
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.contrib.auth import get_user_model
-from django.utils.text import slugify
-from autoslug import AutoSlugField
+
 
 User = get_user_model()
 
@@ -41,8 +39,16 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='автор',
     )
-    tags = models.ManyToManyField(Tag, related_name='recipes', verbose_name='теги')
-    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient', verbose_name='ингредиенты')
+    tags = models.ManyToManyField(
+        Tag,
+        related_name='recipes',
+        verbose_name='теги'
+    )
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        through='RecipeIngredient',
+        verbose_name='ингредиенты'
+    )
     image = models.ImageField(
         upload_to='recipes/',
         blank=True, null=True,
@@ -63,9 +69,21 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='amounts')
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='amounts')
-    quantity = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(1)])
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+        related_name='amounts'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='amounts'
+    )
+    quantity = models.DecimalField(
+        max_digits=6,
+        decimal_places=1,
+        validators=[MinValueValidator(1)]
+    )
 
     class Meta:
         unique_together = ('recipe', 'ingredient')

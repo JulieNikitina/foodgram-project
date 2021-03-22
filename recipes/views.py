@@ -1,12 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .models import Recipe, Tag, User, Follow, Ingredient, RecipeIngredient, Favorite, Purchase
 from .forms import RecipeForm
-from .utils import save_recipe, get_tags
+from .models import (Favorite, Follow, Purchase, Recipe, RecipeIngredient,
+                     Tag, User)
+from .utils import get_tags, save_recipe
 
 
 def index(request):
@@ -90,7 +91,7 @@ def new_recipe(request):
 @login_required()
 def recipe_edit(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    url = reverse('recipe_view',kwargs={'slug': slug})
+    url = reverse('recipe_view', kwargs={'slug': slug})
 
     if recipe.author != request.user:
         return redirect(url)
@@ -252,7 +253,9 @@ def download_purchase_list(request):
         if not purchase_list.get(title):
             purchase_list[title] = [quantity, dimension]
         else:
-            purchase_list[title] = [purchase_list[title][0] + quantity, dimension]
+            purchase_list[title] = [
+                purchase_list[title][0] + quantity, dimension
+            ]
     if purchase_list:
         file_data = [f'{k.capitalize()}: {v[0]} {v[1]}\n'
                      for k, v in purchase_list.items()]
@@ -277,5 +280,3 @@ def page_not_found(request, exception):
 
 def server_error(request):
     return render(request, 'misc/500.html', status=500)
-
-

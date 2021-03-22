@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.db import transaction, IntegrityError
+from django.db import IntegrityError, transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 
@@ -50,7 +50,3 @@ def get_tags(request):
     if 'tags' in request.GET:
         tags = set(request.GET.getlist('tags'))
     return tags
-
-
-
-

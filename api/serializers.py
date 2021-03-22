@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 
-from recipes.models import User, Follow, Favorite, Ingredient, Purchase
+from recipes.models import Favorite, Follow, Ingredient, Purchase, User
 
 
 class UserSerializer(serializers.ModelSerializer):
