@@ -9,17 +9,7 @@ handler404 = 'recipes.views.page_not_found'  # noqa
 handler500 = 'recipes.views.server_error'  # noqa
 
 urlpatterns = [
-    path('about/', include('django.contrib.flatpages.urls')),
-    path(
-        'about-author/',
-        views.flatpage,
-        {'url': '/about-author/'},
-        name='author'
-    ),
-    path('about-spec/', views.flatpage, {'url': '/about-spec/'}, name='spec'),
-    path('about-us/', views.flatpage, {'url': '/about-us/'}, name='about'),
-    path('terms/', views.flatpage, {'url': '/terms/'}, name='terms'),
-    path('contacts/', views.flatpage, {'url': '/contacts/'}, name='contacts'),
+    path('about/', include('about.urls')),
     path('admin/', admin.site.urls),
     path('auth/', include('users.urls')),
     path('auth/', include('django.contrib.auth.urls')),

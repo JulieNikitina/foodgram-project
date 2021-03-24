@@ -16,6 +16,7 @@ ALLOWED_HOSTS = [
 ]
 INSTALLED_APPS = [
     'rest_framework',
+    'about',
     'api',
     'users',
     'recipes',
