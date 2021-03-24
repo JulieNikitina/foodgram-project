@@ -3,7 +3,7 @@
     <div class="nav__container container">
         {% if user.is_authenticated %}
         <ul class="nav__items list">
-            <li class="nav__item"><a href='{% url "index" %}' class="nav__link link">Рецепты</a></li>
+            <li class="nav__item"><a href='{% url "index" %}' class="nav__link link">Чек! Рецепты</a></li>
             <li class="nav__item nav__link link">Пользователь: {{ user.username }}</li>
             <li class="nav__item"><a href='{% url "follow_list" %}' class="nav__link link">Мои подписки</a></li>
             <li class="nav__item"><a href='{% url "new_recipe" %}' class="nav__link link">Создать рецепт</a></li>

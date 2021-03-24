@@ -7,6 +7,7 @@
     <div class="single-card__info">
         <div class="single-card__header-info">
             <h1 class="single-card__title">{{ recipe.name }}</h1>
+            {% if user.is_authenticated %}
             <div class="single-card__favorite">
                 {% if recipe.id in favorite_list %}
                 <button class="button button_style_none" name="favorites">
@@ -18,6 +19,7 @@
                 </button>
                 {% endif %}
             </div>
+            {% endif %}
         </div>
         <ul class="single-card__items">
             {% for tag in recipe.tags.all %}
