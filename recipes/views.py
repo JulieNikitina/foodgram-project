@@ -50,23 +50,30 @@ def index(request):
 
 def recipe_view(request, slug):
     recipe = get_object_or_404(Recipe.objects.all(), slug=slug)
-    user = request.user
-    following = Follow.objects.filter(
-        user=user,
-        author=recipe.author.id
-    ).exists()
 
-    purchase_list = (
-        Purchase.objects.filter(user=user).values_list(
-            'recipe',
-            flat=True)
-    )
+    favorite_list = None
+    purchase_list = None
+    following = None
 
-    favorite_list = (
-        Favorite.objects.filter(user=user).values_list(
-            'recipe',
-            flat=True)
-    )
+    if not request.user.is_anonymous:
+        user = request.user
+
+        following = Follow.objects.filter(
+            user=user,
+            author=recipe.author.id
+        ).exists()
+
+        purchase_list = (
+            Purchase.objects.filter(user=user).values_list(
+                'recipe',
+                flat=True)
+        )
+
+        favorite_list = (
+            Favorite.objects.filter(user=user).values_list(
+                'recipe',
+                flat=True)
+        )
 
     context = {
         'favorite_list': favorite_list,
