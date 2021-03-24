@@ -47,6 +47,7 @@
                 {% endif %}
             </ul>
         </div>
+        {% if user.is_authenticated %}
         <ul class="single-card__items">
             {% if recipe.id not in purchase_list %}
             <button class="button button_style_light-blue" name="purchases" data-out>
@@ -73,6 +74,7 @@
             {% endif %}
             {% endif %}
         </ul>
+        {% endif %}
         <div class="single-card__section">
             <h3 class="single-card__section-title">Ингредиенты:</h3>
             <div class="single-card__items single-card__items_column">
