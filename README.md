@@ -1,4 +1,4 @@
-![workflow status](https://github.com/JulieNikitina/foodgram-projectl/workflows/cook_workflow/badge.svg)
+[![lacomida](https://github.com/JulieNikitina/foodgram-project/actions/workflows/cook_workflow.yml/badge.svg)](https://github.com/JulieNikitina/foodgram-project/actions/workflows/cook_workflow.yml)
 
 # Foodgram-project
 
