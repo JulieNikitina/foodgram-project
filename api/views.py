@@ -2,6 +2,7 @@ from rest_framework import filters, mixins, status, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+
 from api.serializers import (FavoriteSerializer, FollowSerializer,
                              IngredientSerializer, PurchaseSerializer)
 from recipes.models import Favorite, Follow, Ingredient, Purchase, Recipe, User
@@ -34,7 +35,7 @@ class FollowViewSet(MixinSet):
             author=User.objects.get(id=author_id)
         )
         follow.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(data={'success': True}, status=status.HTTP_200_OK)
 
 
 class FavoriteViewSet(MixinSet):
@@ -56,7 +57,7 @@ class FavoriteViewSet(MixinSet):
             recipe=Recipe.objects.get(id=recipe_id)
         )
         favorite.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(data={'success': True}, status=status.HTTP_200_OK)
 
 
 class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from .forms import RecipeForm
-from .models import (Favorite, Follow, Purchase, Recipe, RecipeIngredient,
-                     Tag, User)
+from .models import (Favorite, Follow, Purchase, Recipe, RecipeIngredient, Tag,
+                     User)
 from .utils import get_tags, save_recipe
 
 
