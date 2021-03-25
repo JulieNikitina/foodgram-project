@@ -1,3 +1,5 @@
+![workflow status](https://github.com/JulieNikitina/foodgram-projectl/workflows/foodgram-project/badge.svg)
+
 # Foodgram-project
 
 Social network for publishing recipes by app users.
