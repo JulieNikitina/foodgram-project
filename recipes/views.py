@@ -11,7 +11,6 @@ from .models import (Favorite, Follow, Purchase, Recipe, RecipeIngredient, Tag,
 from .utils import get_tags, save_recipe
 
 
-
 def index(request):
     recipes = Recipe.objects.order_by('-pub_date').all()
 
@@ -84,7 +83,7 @@ def recipe_view(request, slug):
         'recipe': recipe}
     return render(
         request,
-        'recipe.html',
+        'recipes/recipe.html',
         context)
 
 
@@ -94,7 +93,7 @@ def new_recipe(request):
     if form.is_valid():
         recipe = save_recipe(request, form)
         return redirect('recipe_view', slug=recipe.slug)
-    return render(request, 'recipe_form.html', {'form': form},)
+    return render(request, 'recipes/recipe_form.html', {'form': form},)
 
 
 @login_required()
@@ -121,7 +120,7 @@ def recipe_edit(request, slug):
             'form': form,
             'used_ingredients': used_ingredients,
         }
-    return render(request, 'recipe_form.html', context)
+    return render(request, 'recipes/recipe_form.html', context)
 
 
 @login_required()
@@ -179,7 +178,7 @@ def profile(request, username):
         'purchase_list': purchase_list,
         'tags': tags,
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'recipes/profile.html', context)
 
 
 @login_required
@@ -190,7 +189,7 @@ def follow_list(request):
     page = paginator.get_page(page_number)
     return render(
         request,
-        'follow_list.html',
+        'recipes/follow_list.html',
         {'page': page, 'paginator': paginator}
     )
 
@@ -232,7 +231,7 @@ def favorite_list(request):
         'paginator': paginator,
         'tags': tags,
     }
-    return render(request, 'favorite_list.html', context)
+    return render(request, 'recipes/favorite_list.html', context)
 
 
 def purchase_list(request):
@@ -246,7 +245,7 @@ def purchase_list(request):
         'purchase_list': cart,
         'recipes': recipes,
     }
-    return render(request, 'purchase_list.html', context)
+    return render(request, 'recipes/purchase_list.html', context)
 
 
 @login_required
