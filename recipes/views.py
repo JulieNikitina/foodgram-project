@@ -4,10 +4,12 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
+from cook.settings import PER_PAGE
 from .forms import RecipeForm
 from .models import (Favorite, Follow, Purchase, Recipe, RecipeIngredient, Tag,
                      User)
 from .utils import get_tags, save_recipe
+
 
 
 def index(request):
@@ -33,7 +35,7 @@ def index(request):
                 flat=True)
         )
 
-    paginator = Paginator(recipes, 6)
+    paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
@@ -164,7 +166,7 @@ def profile(request, username):
                 flat=True)
         )
 
-    paginator = Paginator(recipes, 6)
+    paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     context = {
@@ -183,7 +185,7 @@ def profile(request, username):
 @login_required
 def follow_list(request):
     author_list = User.objects.filter(following__user=request.user)
-    paginator = Paginator(author_list, 6)
+    paginator = Paginator(author_list, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(
@@ -217,7 +219,7 @@ def favorite_list(request):
     )
     purchase_counter = len(purchase_list)
 
-    paginator = Paginator(favorites, 6)
+    paginator = Paginator(favorites, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 

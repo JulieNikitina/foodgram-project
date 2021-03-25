@@ -120,3 +120,5 @@ SITE_ID = 1
 AUTH_USER_MODEL = 'users.User'
 
 APPEND_SLASH = False
+
+PER_PAGE = 6
