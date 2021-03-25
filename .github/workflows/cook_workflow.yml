@@ -37,8 +37,8 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           rm: true
-          source: "docker-compose.yaml, nginx/default.conf"
-          target: "configs"
+          source: 'docker-compose.yaml, nginx/default.conf'
+          target: 'configs'
       - name: Installing docker
         uses: appleboy/ssh-action@master
         with:

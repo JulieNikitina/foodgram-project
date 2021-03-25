@@ -25,8 +25,8 @@ def save_recipe(request, form):
 def get_ingredients(post):
     ingredients = {}
     for key, name in post.items():
-        if key.startswith("nameIngredient"):
-            value = key.replace("name", "value")
+        if key.startswith('nameIngredient'):
+            value = key.replace('name', 'value')
             ingredients[name] = post[value]
     return ingredients
 

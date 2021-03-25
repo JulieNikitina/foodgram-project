@@ -63,7 +63,7 @@ def remove_get_params(request, tags=None, param=''):
         if len(params) > 0:
             return f'{params_page[0]}&{params}'
         else:
-            return f"{params_page[0]}"
+            return f'{params_page[0]}'
     return f'?{params}'
 
 

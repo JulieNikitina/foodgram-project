@@ -7,12 +7,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "178.154.200.39",
-    "web",
-    "[::1]",
-    "testserver",
+    'localhost',
+    '127.0.0.1',
+    '178.154.200.39',
+    'web',
+    '[::1]',
+    'testserver',
 ]
 INSTALLED_APPS = [
     'rest_framework',
@@ -117,6 +117,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 SITE_ID = 1
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = 'users.User'
 
 APPEND_SLASH = False
