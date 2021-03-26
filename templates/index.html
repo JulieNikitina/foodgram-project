@@ -3,23 +3,23 @@
 {% load recipes_filters %}
 {% load static %}
 {% block stylesheet %}
-   <link rel="stylesheet" href="{% static 'pages/index.css'%}">
+   <link rel='stylesheet' href='{% static "pages/index.css"%}'>
 {% endblock %}
 {% csrf_token %}
 {% block header %}
     Рецепты
 {% endblock %}
 {% block menu %}
-{% include 'recipes/utils/tags.html' %}
+    {% include 'recipes/utils/tags.html' %}
 {% endblock %}
 {% block content %}
-    <div class="card-list">
+    <div class='card-list'>
         {% for recipe in page %}
-        {% include "recipes/utils/recipe_card.html" %}
+            {% include "recipes/utils/recipe_card.html" %}
         {% endfor %}
     </div>
     {% if page.has_other_pages %}
-    {% include "utils/paginator.html" with items=page paginator=paginator%}
+        {% include "utils/paginator.html" with items=page paginator=paginator%}
     {% endif %}
 {% endblock %}
 {% block scripts %}
