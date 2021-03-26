@@ -9,7 +9,7 @@
             </li>
             {% if user.is_authenticated %}
             <li class="nav__item nav__link link">Пользователь: {{ user.username }}</li>
-            <li class='nav__item {% if request.resolver_match.url_name == "follow" %} nav__item_active {% endif %}'>
+            <li class='nav__item {% if request.resolver_match.url_name == "follow_list" %} nav__item_active {% endif %}'>
                 <a href='{% url "follow_list" %}' class="nav__link link">
                     Мои подписки
                 </a>
@@ -44,19 +44,19 @@
             </li>
         </ul>
         {% else %}
-    </ul>
-    <ul class="nav__items list">
-        <li class='nav__item {% if request.resolver_match.url_name == "login" %} nav__item_active {% endif %}'>
-            <a href='{% url "login" %}' class="nav__link link">
-                Войти
-            </a>
-        </li>
-        <li class='nav__item {% if request.resolver_match.url_name == "signup" %} nav__item_active {% endif %}'>
-            <a href='{% url "signup" %}' class="button button_style_blue">
-                Создать аккаунт
-            </a>
-        </li>
-    </ul>
+        </ul>
+        <ul class="nav__items list">
+            <li class='nav__item {% if request.resolver_match.url_name == "login" %} nav__item_active {% endif %}'>
+                <a href='{% url "login" %}' class="nav__link link">
+                    Войти
+                </a>
+            </li>
+            <li class='nav__item {% if request.resolver_match.url_name == "signup" %} nav__item_active {% endif %}'>
+                <a href='{% url "signup" %}' class="button button_style_blue">
+                    Создать аккаунт
+                </a>
+            </li>
+        </ul>
     {% endif %}
     </ul>
 </nav>
