@@ -19,10 +19,14 @@
     {% include 'utils/nav.html' %}
 </header>
 <main class="main container">
+    <div class="main__header">
     <h1 class="main__title">
         {% block header %}
         {% endblock %}
+        {% block menu %}
+        {% endblock %}
     </h1>
+    </div>
     {% block content %}
     <!-- Содержимое страницы -->
     {% endblock content %}

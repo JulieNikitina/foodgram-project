@@ -9,8 +9,10 @@
 {% block header %}
     Рецепты
 {% endblock %}
+{% block menu %}
+{% include 'recipes/utils/tags.html' %}
+{% endblock %}
 {% block content %}
-    {% include 'recipes/utils/tags.html' %}
     <div class="card-list">
         {% for recipe in page %}
         {% include "recipes/utils/recipe_card.html" %}
