@@ -4,12 +4,12 @@
 {% block stylesheet %}
    <link rel='stylesheet' href='{% static "pages/form.css"%}'>
 {% endblock %}
+{% block header %}
+    Войти на сайт
+{% endblock %}
 {% block content %}
 {% load user_filters %}
 <main class='main container'>
-    <div class='main__header'>
-        <h1 class='main__title'>Войти на сайт</h1>
-    </div>
     <div class='form-container'>
         <form class='form' method='post' action='{% url "login" %}'>
             {% csrf_token %}
