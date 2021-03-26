@@ -4,14 +4,14 @@
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static 'pages/index.css'%}">
 {% endblock %}
-{% block content %}
-{% csrf_token %}
 {% block header %}
     Избранное
 {% endblock %}
 {% block menu %}
     {% include 'recipes/utils/tags.html' %}
 {% endblock %}
+{% block content %}
+{% csrf_token %}
 {% if paginator.count == 0 %}
 <div class="custom-center-block">
     <p class="custom-text-block"> У вас нет избранных рецептов </p>

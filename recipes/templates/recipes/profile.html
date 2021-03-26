@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block title %}Страница пользователя {{ author.name }}{% endblock %}
-{% block content %}
 {% load static %}
 {% block stylesheet %}
    <link rel="stylesheet" href="{% static 'pages/index.css'%}">
@@ -11,6 +10,7 @@
 {% block menu %}
     {% include 'recipes/utils/tags.html' %}
 {% endblock %}
+{% block content %}
 {% csrf_token %}
 <div class="author-subscribe" data-author={{author.id}}>
     {% if request.user.id != author.id %}
