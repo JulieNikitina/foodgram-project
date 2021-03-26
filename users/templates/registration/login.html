@@ -9,7 +9,6 @@
 {% endblock %}
 {% block content %}
 {% load user_filters %}
-<main class='main container'>
     <div class='form-container'>
         <form class='form' method='post' action='{% url "login" %}'>
             {% csrf_token %}
@@ -45,5 +44,4 @@
             </div>
         </form>
     </div>
-</main>
 {% endblock %}
