@@ -26,7 +26,7 @@
     </div>
     <div class="card__footer">
         {% if user.is_authenticated %}
-         {% include 'recipes/components/purchase_button.html' %}
+        {% include 'recipes/components/purchase_button.html' %}
 
         {% if recipe.id in favorite_list %}
         <button class="button button_style_none" name="favorites"><span
