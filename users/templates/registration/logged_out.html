@@ -2,12 +2,14 @@
 {% block title %}Вы вышли из системы{% endblock %}
 {% load static %}
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'pages/index.css'%}">
+    <link rel='stylesheet' href='{% static "pages/index.css"%}'>
 {% endblock %}
 {% block content %}
-<main class="main container">
-    <div class="custom-center-block">
-            <p class="custom-text-block">Вы вышли из своей учётной записи. Ждём вас снова!</p>
+<main class='main container'>
+    <div class='custom-center-block'>
+        <p class='custom-text-block'>
+            Вы вышли из своей учётной записи. Ждём вас снова!
+        </p>
     </div>
 </main>
 {% endblock %}

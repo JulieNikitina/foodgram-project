@@ -2,18 +2,20 @@
 {% block title %}Зарегистрироваться{% endblock %}
 {% load static %}
 {% block stylesheet %}
-   <link rel="stylesheet" href="{% static 'pages/form.css'%}">
+   <link rel='stylesheet' href='{% static "pages/form.css"%}'>
 {% endblock %}
 {% block content %}
-    <div class="main__header">
-        <h1 class="main__title">Регистрация</h1>
+    <div class='main__header'>
+        <h1 class='main__title'>Регистрация</h1>
     </div>
-    <div class="form-container">
-        <form class="form" method='post' action='{% url "signup" %}'>
+    <div class='form-container'>
+        <form class='form' method='post' action='{% url "signup" %}'>
             {% csrf_token %}
             {% include 'users/utils/registration_form_params.html' %}
-            <div class="form__footer">
-                <button class="button button_style_blue">Создать аккаунт</button>
+            <div class='form__footer'>
+                <button class='button button_style_blue'>
+                    Создать аккаунт
+                </button>
             </div>
         </form>
     </div>
