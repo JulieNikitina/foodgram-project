@@ -12,18 +12,17 @@
 </div>
 <div class="author-subscribe" data-author={{author.id}}>
     {% if request.user.id != author.id %}
-        {% if following %}
+
         <p style="padding: 0 0 2em 0;">
+            {% if following %}
             <button class="button button_style_light-blue button_size_subscribe" name="subscribe">Отписаться
             </button>
-        </p>
-        {% else %}
-        <p style="padding: 0 0 2em 0;">
-            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться
+            {% else %}
+             <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться
                 на автора
             </button>
+            {% endif %}
         </p>
-        {% endif %}
     {% endif %}
     <div class="card-list">
         {% for recipe in page %}
