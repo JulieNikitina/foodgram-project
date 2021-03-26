@@ -11,6 +11,13 @@
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static 'pages/form.css'%}">
 {% endblock %}
+{% block header %}
+    {% if recipe %}
+    Редактировать рецепт
+    {% else %}
+    Создание рецепта
+    {% endif %}
+{% endblock %}
 {% block content %}
 <main class="main container">
         <span class="form-container">

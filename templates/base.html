@@ -20,10 +20,10 @@
 </header>
 <main class="main container">
     <div class="main__header">
-    <h1 class="main__title">
-        {% block header %}
-        {% endblock %}
-    </h1>
+        <h1 class="main__title">
+            {% block header %}
+            {% endblock %}
+        </h1>
         {% block menu %}
         {% endblock %}
     </div>
@@ -33,7 +33,7 @@
 </main>
 {% include 'utils/footer.html' %}
 {% block scripts %}
-    <!-- Скрипты -->
+<!-- Скрипты -->
 {% endblock scripts %}
 </body>
 </html>

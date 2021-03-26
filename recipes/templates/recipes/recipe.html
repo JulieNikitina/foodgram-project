@@ -4,6 +4,9 @@
 {% block stylesheet %}
    <link rel="stylesheet" href="{% static 'pages/single.css'%}">
 {% endblock %}
+{% block header %}
+    {{ recipe.name }}
+{% endblock %}
 {% block content %}
 {% include 'recipes/utils/recipe_single.html' %}
 {% endblock %}
