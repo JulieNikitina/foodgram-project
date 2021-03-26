@@ -12,16 +12,8 @@
 </div>
 <div class="author-subscribe" data-author={{author.id}}>
     {% if request.user.id != author.id %}
-
         <p style="padding: 0 0 2em 0;">
-            {% if following %}
-            <button class="button button_style_light-blue button_size_subscribe" name="subscribe">Отписаться
-            </button>
-            {% else %}
-             <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться
-                на автора
-            </button>
-            {% endif %}
+            {% include 'recipes/components/follow_button.html' %}
         </p>
     {% endif %}
     <div class="card-list">

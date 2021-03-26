@@ -62,14 +62,7 @@
             {% endif %}
             {% if user != recipe.author %}
             <li class="single-card__item">
-                {% if following %}
-                <button class="button button_style_light-blue button_size_subscribe" name="subscribe">
-                    Отписаться
-                </button>
-                {% else %}
-                <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
-                    Подписаться на автора
-                </button>
+                {% include 'recipes/components/follow_button.html' %}
                 {% endif %}
             </li>
             {% endif %}
