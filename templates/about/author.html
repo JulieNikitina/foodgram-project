@@ -2,17 +2,22 @@
 {% block title %}Об авторе{% endblock %}
 {% load static %}
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'pages/index.css'%}">
+    <link rel='stylesheet' href='{% static "pages/index.css"%}'>
+{% endblock %}
+{% block header %}
+Об авторе
 {% endblock %}
 {% block content %}
-<main class="main container">
-    <div class="custom-center-block">
-            <p class="custom-text-block">Проект написан юным падаваном питона, с терпением и смирением</p>
-        <div class="custom-button-block">
-            <a href='{% url "index" %}' class="nav__link link"> <button class="button button_style_blue">Перейти на главную</button></a>
+    <div class='custom-center-block'>
+        <p class='custom-text-block'>
+            Проект написан юным падаваном питона, с терпением и смирением
+        </p>
+        <div class='custom-button-block'>
+            <a href='{% url "index" %}' class='nav__link link'>
+                <button class='button button_style_blue'>
+                    Перейти на главную
+                </button>
+            </a>
         </div>
     </div>
-
-
-</main>
 {% endblock %}

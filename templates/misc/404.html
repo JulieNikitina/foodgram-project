@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 {% block title %} Ошибка 404 {% endblock %}
 {% load static %}
-{% block header %} Ошибка 404 {% endblock %}
+
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'pages/index.css'%}">
+    <link rel='stylesheet' href='{% static "pages/index.css"%}'>
+{% endblock %}
+{% block header %}
+    Ошибка 404
 {% endblock %}
 {% block content %}
-<main class="main container">
-    <div class="custom-center-block">
-            <p class="custom-text-block">Страница не найдена</p>
-        <div class="custom-button-block">
-            <a href='{% url "index" %}' class="nav__link link"> <button class="button button_style_blue">Перейти на главную</button></a>
+    <div class='custom-center-block'>
+            <p class='custom-text-block'>
+               Ой! Нет такой страницы!
+            </p>
+        <div class='custom-button-block'>
+            <a href='{% url "index" %}' class='nav__link link'>
+                <button class='button button_style_blue'>
+                    Перейти на главную
+                </button>
+            </a>
         </div>
     </div>
-</main>
 {% endblock %}
 
