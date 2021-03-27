@@ -240,16 +240,11 @@ def purchase_list(request):
     cart = Purchase.objects.filter(user=user)
     recipes = Recipe.objects.filter(shopping_list__in=cart)
     purchase_counter = len(recipes)
-    purchasy_list = (RecipeIngredient.objects
-                     .filter(recipe__shopping_list__user=request.user)
-                     .values('ingredient__title', 'ingredient__dimension')
-                     .annotate(Sum('quantity')))
 
     context = {
         'purchase_counter': purchase_counter,
         'purchase_list': cart,
         'recipes': recipes,
-        'purchasy_list': purchasy_list
     }
     return render(request, 'recipes/purchase_list.html', context)
 
@@ -260,10 +255,13 @@ def download_purchase_list(request):
                      .filter(recipe__shopping_list__user=request.user)
                      .values('ingredient__title', 'ingredient__dimension')
                      .annotate(Sum('quantity')))
-    purchase_list = {}
+    file_data = []
     if purchase_list:
-        file_data = [f'{k.capitalize()}: {v[0]} {v[1]}\n'
-                     for k, v in purchase_list.items()]
+        for ingredient in purchase_list:
+            item = (f'{ingredient["ingredient__title"]} '
+                    f'{ingredient["quantity_sum"]} '
+                    f'{ingredient["ingredient__dimension"]}')
+            file_data += '\n'.join(item)
         response = HttpResponse(
             file_data,
             content_type='application/text charset=utf-8'
