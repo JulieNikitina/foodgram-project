@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -250,20 +251,11 @@ def purchase_list(request):
 
 @login_required
 def download_purchase_list(request):
-    recipe_ingredients = (RecipeIngredient.objects
+    purchase_list = (RecipeIngredient.objects
                           .filter(recipe__shopping_list__user=request.user)
-                          .select_related('ingredient'))
-    purchase_list = {}
-    for elem in recipe_ingredients:
-        title = elem.ingredient.title
-        dimension = elem.ingredient.dimension
-        quantity = elem.quantity
-        if not purchase_list.get(title):
-            purchase_list[title] = [quantity, dimension]
-        else:
-            purchase_list[title] = [
-                purchase_list[title][0] + quantity, dimension
-            ]
+                          .values('ingredient__title', 'ingredient__dimension')
+                          .annotate(Sum('quantity')))
+    print(purchase_list)
     if purchase_list:
         file_data = [f'{k.capitalize()}: {v[0]} {v[1]}\n'
                      for k, v in purchase_list.items()]
