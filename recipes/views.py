@@ -251,11 +251,16 @@ def purchase_list(request):
 
 @login_required
 def download_purchase_list(request):
-    purchase_list = (RecipeIngredient.objects
+    purchase_recipe_ingredients = (RecipeIngredient.objects
                           .filter(recipe__shopping_list__user=request.user)
                           .values('ingredient__title', 'ingredient__dimension')
                           .annotate(Sum('quantity')))
-    print(purchase_list)
+    purchase_list = {}
+    for elem in purchase_recipe_ingredients:
+        title = elem.ingredient.title
+        dimension = elem.ingredient.dimension
+        quantity = elem.quantity
+        purchase_list[title] = [quantity, dimension]
     if purchase_list:
         file_data = [f'{k.capitalize()}: {v[0]} {v[1]}\n'
                      for k, v in purchase_list.items()]
