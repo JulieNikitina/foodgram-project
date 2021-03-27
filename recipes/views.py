@@ -259,7 +259,7 @@ def download_purchase_list(request):
     if purchase_list:
         for ingredient in purchase_list:
             item = (f'{ingredient["ingredient__title"]} '
-                    f'{ingredient["quantity_sum"]} '
+                    f'{ingredient["quantity__sum"]} '
                     f'{ingredient["ingredient__dimension"]}')
             file_data += '\n'.join(item)
         response = HttpResponse(
