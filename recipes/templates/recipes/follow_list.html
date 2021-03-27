@@ -3,8 +3,8 @@
 {% load static %}
 {% load recipes_filters %}
 {% block stylesheet %}
-<link rel='stylesheet' href='{% static "pages/myFollow.css"%}'>
-<link rel='stylesheet' href='{% static "pages/index.css"%}'>
+    <link rel='stylesheet' href='{% static "pages/myFollow.css"%}'>
+    <link rel='stylesheet' href='{% static "pages/index.css"%}'>
 {% endblock %}
 {% block header %}
     Мои подписки
@@ -12,42 +12,42 @@
 {% block content %}
     {% csrf_token %}
     {% if paginator.count == 0 %}
-    <div class='custom-center-block'>
-        <p class='custom-text-block'>
-            Вы ни на кого не подписаны
-        </p>
-    </div>
-    {% else %}
-    <div class='card-list'>
-        {% for author in page %}
-        {% recipes_by author as recipes %}
-        <div class='card-user' data-author={{author.id}}>
-            <div class='card-user__header'>
-                <h2 class='card-user__title'>
-                    {% firstof author.name author.username %}
-                </h2>
-            </div>
-            <div class='card-user__body'>
-                <ul class='card-user__items'>
-                    {% for recipe in recipes %}
-                        {% include 'recipes/utils/recipe_follow_page.html' %}
-                    {% endfor %}
-                    <li class='card-user__item'>
-                        <a href='{% url "profile" author.username %}' class='card-user__link link'>
-                            {% more_recipes author %}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class='card-user__footer'>
-                <button class='button button_style_light-blue button_size_auto' name='subscribe'>
-                    Отписаться
-                </button>
-            </div>
+        <div class='custom-center-block'>
+            <p class='custom-text-block'>
+                Вы ни на кого не подписаны
+            </p>
         </div>
-        {% endfor %}
-    </div>
-    </div>
+    {% else %}
+        <div class='card-list'>
+            {% for author in page %}
+                {% recipes_by author as recipes %}
+                <div class='card-user' data-author={{author.id}}>
+                    <div class='card-user__header'>
+                        <h2 class='card-user__title'>
+                            {% firstof author.name author.username %}
+                        </h2>
+                    </div>
+                    <div class='card-user__body'>
+                        <ul class='card-user__items'>
+                            {% for recipe in recipes %}
+                                {% include 'recipes/utils/recipe_follow_page.html' %}
+                            {% endfor %}
+                            <li class='card-user__item'>
+                                <a href='{% url "profile" author.username %}' class='card-user__link link'>
+                                    {% more_recipes author %}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='card-user__footer'>
+                        <button class='button button_style_light-blue button_size_auto' name='subscribe'>
+                            Отписаться
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        </div>
     {% endif %}
     {% if page.has_other_pages %}
         {% include "utils/paginator.html" with items=page paginator=paginator%}

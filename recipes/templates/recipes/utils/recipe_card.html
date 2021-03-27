@@ -32,8 +32,8 @@
     </div>
     <div class='card__footer'>
         {% if user.is_authenticated %}
-        {% include 'recipes/components/purchase_button.html' %}
-         {% include 'recipes/components/favorite_icon.html' %}
+            {% include 'recipes/components/purchase_button.html' %}
+            {% include 'recipes/components/favorite_icon.html' %}
         {% else %}
         <a href='{% url "login" %}'>
             <button class='button button_style_none' name='favorites' data-out>

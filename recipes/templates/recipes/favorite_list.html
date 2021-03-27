@@ -2,7 +2,7 @@
 {% block title %} Избранное {% endblock %}
 {% load static %}
 {% block stylesheet %}
-<link rel="stylesheet" href="{% static 'pages/index.css'%}">
+    <link rel='stylesheet' href='{% static "pages/index.css" %}'>
 {% endblock %}
 {% block header %}
     Избранное
@@ -11,29 +11,29 @@
     {% include 'recipes/utils/tags.html' %}
 {% endblock %}
 {% block content %}
-{% csrf_token %}
-{% if paginator.count == 0 %}
-<div class="custom-center-block">
-    <p class="custom-text-block"> У вас нет избранных рецептов </p>
-</div>
-{% else %}
-<div class="card-list">
-    {% for recipe in page %}
-        {% include "recipes/utils/recipe_card.html" %}
-    {% endfor %}
-</div>
-{% if page.has_other_pages %}
-{% include "utils/paginator.html" with items=page paginator=paginator %}
-{% endif %}
-{% endif %}
+    {% csrf_token %}
+    {% if paginator.count == 0 %}
+        <div class='custom-center-block'>
+            <p class='custom-text-block'> У вас нет избранных рецептов </p>
+        </div>
+    {% else %}
+    <div class='card-list'>
+        {% for recipe in page %}
+            {% include "recipes/utils/recipe_card.html" %}
+        {% endfor %}
+    </div>
+    {% if page.has_other_pages %}
+    {% include 'utils/paginator.html' with items=page paginator=paginator %}
+    {% endif %}
+    {% endif %}
 {% endblock %}
 {% block scripts %}
-    <script src="{% static 'js/components/MainCards.js'%}"></script>
-    <script src="{% static 'js/components/Purchases.js'%}"></script>
-    <script src="{% static 'js/components/Favorites.js'%}"></script>
-    <script src="{% static 'js/config/config.js'%}"></script>
-    <script src="{% static 'js/components/CardList.js'%}"></script>
-    <script src="{% static 'js/components/Header.js'%}"></script>
-    <script src="{% static 'js/api/Api.js'%}"></script>
-    <script src="{% static 'yp/favorite.js'%}"></script>
+    <script src='{% static "js/components/MainCards.js" %}'></script>
+    <script src='{% static "js/components/Purchases.js" %}'></script>
+    <script src='{% static "js/components/Favorites.js" %}'></script>
+    <script src='{% static "js/config/config.js" %}'></script>
+    <script src='{% static "js/components/CardList.js" %}'></script>
+    <script src='{% static "js/components/Header.js" %}'></script>
+    <script src='{% static "js/api/Api.js" %}'></script>
+    <script src='{% static "yp/favorite.js" %}'></script>
 {% endblock scripts %}

@@ -2,25 +2,25 @@
 {% block title %} Страница рецепта {{ recipe.name }}{% endblock %}
 {% load static %}
 {% block stylesheet %}
-   <link rel="stylesheet" href="{% static 'pages/single.css'%}">
+   <link rel='stylesheet' href='{% static "pages/single.css" %}'>
 {% endblock %}
 {% block content %}
     {% include 'recipes/utils/recipe_single.html' %}
 {% endblock %}
 {% block scripts %}
-    <script src="{% static 'js/components/Purchases.js'%}"></script>
+    <script src='{% static "js/components/Purchases.js" %}'></script>
     {% if user.is_authenticated %}
-        <script src="{% static 'js/components/Favorites.js'%}"></script>
-        <script src="{% static 'js/components/Subscribe.js'%}"></script>
+        <script src='{% static "js/components/Favorites.js" %}'></script>
+        <script src='{% static "js/components/Subscribe.js" %}'></script>
     {% endif %}
-    <script src="{% static 'js/config/config.js'%}"></script>
-    <script src="{% static 'js/components/MainCards.js'%}"></script>
-    <script src="{% static 'js/components/SingleCard.js'%}"></script>
-    <script src="{% static 'js/components/Header.js'%}"></script>
-    <script src="{% static 'js/api/Api.js'%}"></script>
+    <script src='{% static "js/config/config.js" %}'></script>
+    <script src='{% static "js/components/MainCards.js" %}'></script>
+    <script src='{% static "js/components/SingleCard.js" %}'></script>
+    <script src='{% static "js/components/Header.js" %}'></script>
+    <script src='{% static "js/api/Api.js" %}'></script>
      {% if user.is_authenticated %}
-        <script src="{% static 'yp/singlePage.js'%}"></script>
+        <script src='{% static "yp/singlePage.js" %}'></script>
      {% else %}
-        <script src="{% static 'yp/singlePageNotAuth.js'%}"></script>
+        <script src='{% static "yp/singlePageNotAuth.js" %}'></script>
     {% endif %}
 {% endblock %}

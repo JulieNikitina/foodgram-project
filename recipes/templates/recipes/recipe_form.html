@@ -9,150 +9,140 @@
 {% load static %}
 {% load recipes_filters %}
 {% block stylesheet %}
-<link rel="stylesheet" href="{% static 'pages/form.css'%}">
+<link rel='stylesheet' href='{% static "pages/form.css" %}'>
 {% endblock %}
 {% block header %}
-    {% if recipe %}
-    Редактировать рецепт
-    {% else %}
-    Создание рецепта
-    {% endif %}
+{% if recipe %}
+Редактировать рецепт
+{% else %}
+Создание рецепта
+{% endif %}
 {% endblock %}
 {% block content %}
-<main class="main container">
-        <span class="form-container">
-            <form class="form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form__group">
-                    <label for="id_name" class="form__label">Название</label>
-                    <div class="form__field-group">
-                        <input type="text" id="id_name" name="name"
-                               class="form__input"
-                               value="{{ form.name.value|default_if_none:'' }}">
-                        <span class="form__error">{{ form.name.errors }}</span>
+<span class='form-container'>
+    <form class='form' method='post' enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class='form__group'>
+            <label for='id_name' class='form__label'>
+                Название
+            </label>
+            <div class='form__field-group'>
+                <input type='text' id='id_name' name='name' class='form__input' value="{{ form.name.value|default_if_none:'' }}">
+                <span class='form__error'>{{ form.name.errors }}</span>
+            </div>
+        </div>
+        <div class='form__group'>
+            <p class='form__label'>Теги</p>
+            <div class='form__field-group'>
+                <div class='tags'>
+                    {% for field in form.tags %}
+                    <div class='tags__item'>
+                        <input type='checkbox' name='tags' value="{{ field.choice_label|tag_id}}"
+                               id='{{ field.id_for_label }}'
+                               class='tags__checkbox tags__checkbox_style_{{ field.choice_label|tag_color }}'
+                               {% if field.data.selected %} checked {% endif %}>
+                        <label for='{{ field.id_for_label }}' class='tags__label'>{{ field.choice_label }}</label>
                     </div>
+                    {% endfor %}
                 </div>
-            <div class="form__group">
-                <p class="form__label">Теги</p>
-                <div class="form__field-group">
-                    <div class="tags">
-                        {% for field in form.tags %}
-                        <div class="tags__item">
-                            <input type="checkbox" name="tags" value="{{ field.choice_label|tag_id}}"
-                                   id="{{ field.id_for_label }}"
-                                   class="tags__checkbox tags__checkbox_style_{{ field.choice_label|tag_color }}"
-                                   {% if field.data.selected %} checked {% endif %}>
-                            <label for="{{ field.id_for_label }}" class="tags__label">{{ field.choice_label }}</label>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% if form.tags.errors %}
-                    <span class="form__error">{{ form.tags.errors | escape }}</span>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="form__group">
-                <label for="nameIngredient"
-                       class="form__label"> Ингредиенты </label>
-                <div class="form__field-group">
-                    <div class="form__field-group-ingredientes">
-                        <div class="form__dropdown">
-                            <input type="text" id="nameIngredient"
-                                   class="form__input">
-                            <div class="form__dropdown-items"></div>
-                        </div>
-                        <input type="number" id="cantidad"
-                               class="form__input" min="0">
-                        <label for="cantidad" class="form__label"
-                               id="cantidadVal"> единицы измерения </label>
-                    </div>
-
-                    <div class="form__field-group-ingredientes-container">
-
-                        {% for ingredient in used_ingredients %}
-                        <div class="form__field-item-ingredient"
-                             id="ing_{{ forloop.counter }}">
-                            <span> {{ ingredient.ingredient.title }} {{ ingredient.quantity }} {{ ingredient.ingredient.dimension }}</span>
-                            <span class="form__field-item-delete"></span>
-                            <input id="nameIngredient_{{ forloop.counter }}"
-                                   name="nameIngredient_{{ forloop.counter }}"
-                                   type="hidden"
-                                   value="{{ ingredient.ingredient.title }}">
-                            <input id="valueIngredient_{{ forloop.counter }}"
-                                   name="valueIngredient_{{ forloop.counter }}"
-                                   type="hidden"
-                                   value="{{ ingredient.quantity }}">
-                            <input id="unitsIngredient_{{ forloop.counter }}"
-                                   name="unitsIngredient_{{ forloop.counter }}"
-                                   type="hidden"
-                                   value="{{ ingredient.ingredient.dimension }}">
-                        </div>
-                        {% endfor %}
-
-                    </div>
-                    <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
-        {% if form.ingredients.errors %}
-        <span class="form__error">{{ form.ingredients.errors | escape }}</span>
-        {% endif %}
-        <span class="form__error"></span>
-                </div>
-            </div>
-
-            <div class="form__group">
-                <label for="id_time"
-                       class="form__label">Время приготовления</label>
-                <div class="form__field-group form__field-group_time">
-                    <input type="text" id="id_time_for_cooking" name="time_for_cooking"
-                           class="form__input"
-                           value="{{ form.time_for_cooking.value|default_if_none:'' }}">
-                    <label for="id_time"
-                           class="form__label">мин.</label>
-                    <span class="form__error">{{ form.time_for_cooking.errors }}</span>
-                </div>
-            </div>
-
-            <div class="form__group">
-                <label for="id_description"
-                       class="form__label">Описание</label>
-                <div class="form__field-group">
-                        <textarea name="recipe_text" id="id_recipe_text"
-                                  rows="8"
-                                  class="form__textarea">{{ form.recipe_text.value|default_if_none:'' }}</textarea>
-                    <span class="form__error">{{ form.recipe_text.errors }}</span>
-                </div>
-            </div>
-
-            <div class="form__group">
-                <span class="form__label">Добавить фото</span>
-                <div class="form__field-group">
-                    <label for="id_file"
-                           class="form__file-button">{% if form.image.value %}
-                        Replace image:
-                        {{ form.image.value }}{% else %}Выбрать изображение{% endif %}</label>
-                    <input type="file" class="form__file" name="image"
-                           id="id_file"
-                           value="{{ form.image.value|default_if_none:""}}">
-                    <span class="form__error">{{ form.image.errors }}</span>
-                </div>
-            </div>
-
-            <div class=" form__footer">
-                <button class="button button_style_blue">Сохранить</button>
-                {% if edit %}
-                <a style="margin-left: 2.5em" href="
-{{ request.get_full_path }}/delete/"
-                   class="form__ingredient-link">Удалить</a>
+                {% if form.tags.errors %}
+                    <span class='form__error'>{{ form.tags.errors | escape }}</span>
                 {% endif %}
             </div>
-        </form>
+        </div>
+        <div class='form__group'>
+            <label for='nameIngredient' class='form__label'> Ингредиенты </label>
+            <div class='form__field-group'>
+                <div class='form__field-group-ingredientes'>
+                    <div class='form__dropdown'>
+                        <input type='text' id='nameIngredient' class='form__input'>
+                        <div class='form__dropdown-items'></div>
+                    </div>
+                    <input type='number' id='cantidad' class='form__input' min='0'>
+                    <label for='cantidad' class='form__label' id='cantidadVal'> единицы измерения </label>
+                </div>
+                <div class='form__field-group-ingredientes-container'>
+                    {% for ingredient in used_ingredients %}
+                    <div class='form__field-item-ingredient' id='ing_{{ forloop.counter }}'>
+                        <span> {{ ingredient.ingredient.title }} {{ ingredient.quantity }} {{ ingredient.ingredient.dimension }}</span>
+                        <span class='form__field-item-delete'></span>
+                        <input id='nameIngredient_{{ forloop.counter }}'
+                               name='nameIngredient_{{ forloop.counter }}'
+                               type='hidden'
+                               value='{{ ingredient.ingredient.title }}'>
+                        <input id='valueIngredient_{{ forloop.counter }}'
+                               name='valueIngredient_{{ forloop.counter }}'
+                               type='hidden'
+                               value='{{ ingredient.quantity }}'>
+                        <input id='unitsIngredient_{{ forloop.counter }}'
+                               name='unitsIngredient_{{ forloop.counter }}'
+                               type='hidden'
+                               value='{{ ingredient.ingredient.dimension }}'>
+                    </div>
+                    {% endfor %}
+                </div>
+                <span class='form__ingredient-link' id='addIng'>Добавить ингредиент</span>
+                {% if form.ingredients.errors %}
+                    <span class='form__error'>{{ form.ingredients.errors | escape }}</span>
+                {% endif %}
+                <span class='form__error'></span>
+            </div>
+        </div>
+        <div class='form__group'>
+            <label for='id_time' class='form__label'>Время приготовления</label>
+            <div class='form__field-group form__field-group_time'>
+                <input type='text' id='id_time_for_cooking' name='time_for_cooking'
+                       class='form__input'
+                       value="{{ form.time_for_cooking.value|default_if_none:'' }}">
+                <label for='id_time'
+                       class='form__label'>мин.</label>
+                <span class='form__error'>{{ form.time_for_cooking.errors }}</span>
+            </div>
+        </div>
 
-        </span>
-</main>
+        <div class='form__group'>
+            <label for='id_description' class='form__label'>Описание</label>
+            <div class='form__field-group'>
+                    <textarea name='recipe_text' id='id_recipe_text'
+                              rows='8'
+                              class='form__textarea'>{{ form.recipe_text.value|default_if_none:'' }}</textarea>
+                <span class='form__error'>{{ form.recipe_text.errors }}</span>
+            </div>
+        </div>
+
+        <div class='form__group'>
+            <span class='form__label'>Добавить фото</span>
+            <div class='form__field-group'>
+                <label for='id_file' class='form__file-button'>
+                    {% if form.image.value %}
+                        Replace image:
+                        {{ form.image.value }}
+                    {% else %}
+                        Выбрать изображение
+                    {% endif %}
+                </label>
+                <input type='file' class='form__file' name='image'
+                       id='id_file'
+                       value="{{ form.image.value|default_if_none:''}}">
+                <span class='form__error'>{{ form.image.errors }}</span>
+            </div>
+        </div>
+
+        <div class='form__footer'>
+            <button class='button button_style_blue'>Сохранить</button>
+            {% if edit %}
+            <a style='margin-left: 2.5em' href='{{ request.get_full_path }}/delete/' class='form__ingredient-link'>
+                Удалить
+            </a>
+            {% endif %}
+        </div>
+    </form>
+</span>
 {% endblock %}
 {% block scripts %}
-<script src="{% static 'js/config/config.js'%}"></script>
-<script src="{% static 'js/components/Header.js'%}"></script>
-<script src="{% static '/js/utils/debouncing.js'%}"></script>
-<script src="{% static 'js/api/Api.js'%}"></script>
-<script src="{% static 'yp/formRecipe.js' %}"></script>
+<script src='{% static "js/config/config.js" %}'></script>
+<script src='{% static "js/components/Header.js" %}'></script>
+<script src='{% static "/js/utils/debouncing.js" %}'></script>
+<script src='{% static "js/api/Api.js" %}'></script>
+<script src='{% static "yp/formRecipe.js" %}'></script>
 {% endblock %}
