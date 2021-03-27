@@ -255,13 +255,16 @@ def download_purchase_list(request):
                      .filter(recipe__shopping_list__user=request.user)
                      .values('ingredient__title', 'ingredient__dimension')
                      .annotate(Sum('quantity')))
-    file_data = []
+    result = []
+    file_data = ''
     if purchase_list:
         for ingredient in purchase_list:
             item = (f'{ingredient["ingredient__title"]} '
                     f'{ingredient["quantity__sum"]} '
                     f'{ingredient["ingredient__dimension"]}')
-            file_data += ''.join(item)
+            result.append(item)
+        file_data = '\n'.join(result)
+        
         response = HttpResponse(
             file_data,
             content_type='application/text charset=utf-8'
