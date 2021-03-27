@@ -9,7 +9,7 @@
             <h1 class="single-card__title">{{ recipe.name }}</h1>
             {% if user.is_authenticated %}
             <div class="single-card__favorite">
-                {% include 'recipes/components/favorite_icon.html' with single %}
+                {% include 'recipes/components/favorite_icon.html' with single=True %}
             </div>
             {% endif %}
         </div>
