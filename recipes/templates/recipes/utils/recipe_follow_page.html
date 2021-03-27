@@ -2,8 +2,8 @@
     <a href='{% url "recipe_view" recipe.slug %}' class='link'>
         <div class='recipe'>
             {% load thumbnail %}
-            {% thumbnail recipe.image "300x300" crop="center" as im %}
-            <img src='{{ im.url }}' alt='какой-то-текст' class='recipe__image'>
+                {% thumbnail recipe.image '300x300' crop='center' as im %}
+                <img src='{{ im.url }}' alt='какой-то-текст' class='recipe__image'>
             {% endthumbnail %}
             <h3 class='recipe__title'> {{ recipe.name }} </h3>
             <p class='recipe__text'>
@@ -13,3 +13,4 @@
         </div>
     </a>
 </li>
+
