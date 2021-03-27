@@ -24,7 +24,9 @@
             </p>
             <p class='card__text'>
                 <span class='icon-user'></span>
-                <a href='{% url "profile" recipe.author.username %}' style='color:black'>{{ recipe.author.username }}</a>
+                <a href='{% url "profile" recipe.author.username %}' style='color:black'>
+                    {% firstof {{ recipe.author.name }} {{ recipe.author.username }} %}
+                </a>
             </p>
         </div>
     </div>
