@@ -70,3 +70,14 @@ def remove_get_params(request, tags=None, param=''):
 @register.simple_tag
 def cart_counter(user):
     return user.shopping_list.count()
+
+
+@register.simple_tag
+def switch_page(request, page_number):
+    path = request.get_full_path()
+    current_page = request.GET.get('page')
+    if 'tags' in path and 'page' in path:
+        return path.replace(f'page={current_page}', f'page={page_number}')
+    if 'tags' in path and 'page' not in path:
+        return f'?page={page_number}&{path[2:]}'
+    return f'?page={page_number}'
