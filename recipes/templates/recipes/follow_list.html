@@ -3,8 +3,8 @@
 {% load static %}
 {% load recipes_filters %}
 {% block stylesheet %}
-<link rel="stylesheet" href="{% static 'pages/myFollow.css'%}">
-<link rel="stylesheet" href="{% static 'pages/index.css'%}">
+<link rel='stylesheet' href='{% static "pages/myFollow.css"%}'>
+<link rel='stylesheet' href='{% static "pages/index.css"%}'>
 {% endblock %}
 {% block header %}
     Мои подписки
@@ -12,46 +12,37 @@
 {% block content %}
     {% csrf_token %}
     {% if paginator.count == 0 %}
-    <div class="custom-center-block">
-        <p class="custom-text-block"> Вы ни на кого не подписаны </p>
+    <div class='custom-center-block'>
+        <p class='custom-text-block'>
+            Вы ни на кого не подписаны
+        </p>
     </div>
     {% else %}
-    <div class="card-list">
+    <div class='card-list'>
         {% for author in page %}
         {% recipes_by author as recipes %}
-        <div class="card-user" data-author={{author.id}}>
-            <div class="card-user__header">
-                <h2 class="card-user__title">
-                     {% firstof author.name author.username %}
+        <div class='card-user' data-author={{author.id}}>
+            <div class='card-user__header'>
+                <h2 class='card-user__title'>
+                    {% firstof author.name author.username %}
                 </h2>
             </div>
-            <div class="card-user__body">
-                <ul class="card-user__items">
+            <div class='card-user__body'>
+                <ul class='card-user__items'>
                     {% for recipe in recipes %}
-                    <li class="card-user__item">
-                        <a href="{% url 'recipe_view' recipe.slug %}" class="link">
-                            <div class="recipe">
-                                {% load thumbnail %}
-                                {% thumbnail recipe.image "300x300" crop="center" as im %}
-                                <img src="{{ im.url }}" alt="какой-то-текст" class="recipe__image">
-                                {% endthumbnail %}
-                                <h3 class="recipe__title"> {{ recipe.name }} </h3>
-                                <p class="recipe__text"><span class="icon-time"></span> {{ recipe.time_for_cooking }} мин.
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-
+                        {% include 'recipes/utils/recipe_follow_page.html' %}
                     {% endfor %}
-                    <li class="card-user__item">
-                        <a href="{% url 'profile' author.username %}"
-                        class="card-user__link link"> {% more_recipes author %}
+                    <li class='card-user__item'>
+                        <a href='{% url "profile" author.username %}' class='card-user__link link'>
+                            {% more_recipes author %}
                         </a>
                     </li>
                 </ul>
             </div>
-            <div class="card-user__footer">
-                <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
+            <div class='card-user__footer'>
+                <button class='button button_style_light-blue button_size_auto' name='subscribe'>
+                    Отписаться
+                </button>
             </div>
         </div>
         {% endfor %}
@@ -59,15 +50,15 @@
     </div>
     {% endif %}
     {% if page.has_other_pages %}
-    {% include "utils/paginator.html" with items=page paginator=paginator%}
+        {% include "utils/paginator.html" with items=page paginator=paginator%}
     {% endif %}
 {% endblock %}
 {% block scripts %}
-<script src="{% static 'js/config/config.js'%}"></script>
-<script src="{% static 'js/components/MainCards.js'%}"></script>
-<script src="{% static 'js/components/MyFollow.js'%}"></script>
-<script src="{% static 'js/components/Subscribe.js'%}"></script>
-<script src="{% static 'js/components/Header.js'%}"></script>
-<script src="{% static 'js/api/Api.js'%}"></script>
-<script src="{% static 'yp/myFollow.js'%}"></script>
+    <script src='{% static "js/config/config.js" %}'></script>
+    <script src='{% static "js/components/MainCards.js" %}'></script>
+    <script src='{% static "js/components/MyFollow.js" %}'></script>
+    <script src='{% static "js/components/Subscribe.js" %}'></script>
+    <script src='{% static "js/components/Header.js" %}'></script>
+    <script src='{% static "js/api/Api.js" %}'></script>
+    <script src='{% static "yp/myFollow.js" %}'></script>
 {% endblock %}
