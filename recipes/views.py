@@ -94,7 +94,7 @@ def new_recipe(request):
     if form.is_valid():
         recipe = save_recipe(request, form)
         return redirect('recipe_view', slug=recipe.slug)
-    return render(request, 'recipes/recipe_form.html', {'form': form},)
+    return render(request, 'recipes/recipe_form.html', {'form': form}, )
 
 
 @login_required()
@@ -117,10 +117,10 @@ def recipe_edit(request, slug):
     used_ingredients = recipe.amounts.all()
     edit = True
     context = {
-            'edit': edit,
-            'form': form,
-            'used_ingredients': used_ingredients,
-        }
+        'edit': edit,
+        'form': form,
+        'used_ingredients': used_ingredients,
+    }
     return render(request, 'recipes/recipe_form.html', context)
 
 
@@ -226,7 +226,7 @@ def favorite_list(request):
     context = {
         'all_tags': all_tags,
         'purchase_counter': purchase_counter,
-        'purchase_list':  purchase_list,
+        'purchase_list': purchase_list,
         'favorite_list': favorites_list,
         'page': page,
         'paginator': paginator,
@@ -240,27 +240,27 @@ def purchase_list(request):
     cart = Purchase.objects.filter(user=user)
     recipes = Recipe.objects.filter(shopping_list__in=cart)
     purchase_counter = len(recipes)
+    purchasy_list = (RecipeIngredient.objects
+                     .filter(recipe__shopping_list__user=request.user)
+                     .values('ingredient__title', 'ingredient__dimension')
+                     .annotate(Sum('quantity')))
 
     context = {
         'purchase_counter': purchase_counter,
         'purchase_list': cart,
         'recipes': recipes,
+        'purchasy_list': purchasy_list
     }
     return render(request, 'recipes/purchase_list.html', context)
 
 
 @login_required
 def download_purchase_list(request):
-    purchase_recipe_ingredients = (RecipeIngredient.objects
-                          .filter(recipe__shopping_list__user=request.user)
-                          .values('ingredient__title', 'ingredient__dimension')
-                          .annotate(Sum('quantity')))
+    purchase_list = (RecipeIngredient.objects
+                     .filter(recipe__shopping_list__user=request.user)
+                     .values('ingredient__title', 'ingredient__dimension')
+                     .annotate(Sum('quantity')))
     purchase_list = {}
-    for elem in purchase_recipe_ingredients:
-        title = elem.ingredient.title
-        dimension = elem.ingredient.dimension
-        quantity = elem.quantity
-        purchase_list[title] = [quantity, dimension]
     if purchase_list:
         file_data = [f'{k.capitalize()}: {v[0]} {v[1]}\n'
                      for k, v in purchase_list.items()]
