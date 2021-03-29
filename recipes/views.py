@@ -32,7 +32,7 @@ def index(request):
 
 
 def recipe_view(request, slug):
-    recipe = get_object_or_404(Recipe.objects.all(), slug=slug)
+    recipe = get_object_or_404(Recipe.objects.params_for_query(request.user), slug=slug)
 
     context = {'recipe': recipe}
     return render(
