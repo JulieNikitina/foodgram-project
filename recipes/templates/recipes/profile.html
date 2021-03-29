@@ -5,7 +5,7 @@
    <link rel='stylesheet' href='{% static "pages/index.css"%}'>
 {% endblock %}
 {% block header %}
-    {{ author.username }}
+    {% firstof recipe.author.name recipe.author.username %}
 {% endblock %}
 {% block menu %}
     {% include 'recipes/utils/tags.html' %}
