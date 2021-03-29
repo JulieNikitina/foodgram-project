@@ -264,7 +264,7 @@ def download_purchase_list(request):
                     f'{ingredient["ingredient__dimension"]}')
             result.append(item)
         file_data = '\n'.join(result)
-        
+
         response = HttpResponse(
             file_data,
             content_type='application/text charset=utf-8'
