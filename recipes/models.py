@@ -30,6 +30,31 @@ class Tag(models.Model):
         return self.title
 
 
+class RecipeCustomQuerySet(models.QuerySet):
+    def params_for_query(self, user):
+        if user.is_anonymous:
+            return self
+        purchase = Purchase.objects.filter(
+            recipe=models.OuterRef('pk'), user=user
+        )
+        favorite = Favorite.objects.filter(
+            recipe=models.OuterRef('pk'), user=user
+        )
+        follow = Follow.objects.filter(
+            author=models.OuterRef('author'), user=user
+        )
+        return self.annotate(
+            is_purchase=models.Exists(purchase),
+            is_favorite=models.Exists(favorite),
+            is_follow=models.Exists(follow),
+        )
+
+    def by_tags(self, tags):
+        if not tags:
+            return self
+        return self.filter(tags__title__in=tags).distinct()
+
+
 class Recipe(models.Model):
     name = models.TextField('название', max_length=30, blank=False, null=False)
     author = models.ForeignKey(
@@ -59,6 +84,7 @@ class Recipe(models.Model):
     recipe_text = models.TextField('рецепт', null=False, blank=False)
     time_for_cooking = models.PositiveSmallIntegerField('время приготовления')
     pub_date = models.DateTimeField('date published', auto_now_add=True)
+    objects = RecipeCustomQuerySet.as_manager()
 
     class Meta:
         ordering = ['-pub_date']
@@ -142,3 +168,5 @@ class Purchase(models.Model):
 
     class Meta:
         unique_together = ['user', 'recipe']
+
+

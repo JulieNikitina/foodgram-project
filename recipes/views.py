@@ -13,27 +13,9 @@ from .utils import get_tags, save_recipe
 
 
 def index(request):
-    recipes = Recipe.objects.order_by('-pub_date').all()
-
     tags = get_tags(request)
     all_tags = Tag.objects.all()
-    if tags:
-        recipes = Recipe.objects.filter(tags__title__in=tags).distinct()
-
-    favorites_list = None
-    purchase_list = None
-    if not request.user.is_anonymous:
-        user = request.user
-        favorites_list = (
-            Favorite.objects.filter(user=user).values_list(
-                'recipe',
-                flat=True)
-        )
-        purchase_list = (
-            Purchase.objects.filter(user=user).values_list(
-                'recipe',
-                flat=True)
-        )
+    recipes = Recipe.objects.by_tags(tags).params_for_query(request.user)
 
     paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
@@ -41,10 +23,9 @@ def index(request):
 
     context = {
         'all_tags': all_tags,
-        'favorite_list': favorites_list,
+        'recipes': recipes,
         'page': page,
         'paginator': paginator,
-        'purchase_list': purchase_list,
         'tags': tags}
 
     return render(request, 'index.html', context)
@@ -53,35 +34,7 @@ def index(request):
 def recipe_view(request, slug):
     recipe = get_object_or_404(Recipe.objects.all(), slug=slug)
 
-    favorite_list = None
-    purchase_list = None
-    following = None
-
-    if not request.user.is_anonymous:
-        user = request.user
-
-        following = Follow.objects.filter(
-            user=user,
-            author=recipe.author.id
-        ).exists()
-
-        purchase_list = (
-            Purchase.objects.filter(user=user).values_list(
-                'recipe',
-                flat=True)
-        )
-
-        favorite_list = (
-            Favorite.objects.filter(user=user).values_list(
-                'recipe',
-                flat=True)
-        )
-
-    context = {
-        'favorite_list': favorite_list,
-        'following': following,
-        'purchase_list': purchase_list,
-        'recipe': recipe}
+    context = {'recipe': recipe}
     return render(
         request,
         'recipes/recipe.html',
@@ -134,37 +87,15 @@ def recipe_delete(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    recipes = Recipe.objects.filter(author=author)
-
-    favorite_list = None
-    purchase_list = None
-    following = None
 
     tags = get_tags(request)
     all_tags = Tag.objects.all()
-    if tags:
-        recipes = Recipe.objects.filter(
-            author=author,
-            tags__title__in=tags
-        ).distinct()
-    if not request.user.is_anonymous:
-        user = request.user
-        following = Follow.objects.filter(
-            user=user,
-            author=author
-        ).exists()
 
-        purchase_list = (
-            Purchase.objects.filter(user=user).values_list(
-                'recipe',
-                flat=True)
-        )
-
-        favorite_list = (
-            Favorite.objects.filter(user=user).values_list(
-                'recipe',
-                flat=True)
-        )
+    recipes = (
+        Recipe.objects.by_tags(tags)
+        .params_for_query(request.user)
+        .filter(author=author)
+    )
 
     paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
@@ -172,11 +103,9 @@ def profile(request, username):
     context = {
         'all_tags': all_tags,
         'author': author,
-        'favorite_list': favorite_list,
-        'following': following,
+        'recipes': recipes,
         'page': page,
         'paginator': paginator,
-        'purchase_list': purchase_list,
         'tags': tags,
     }
     return render(request, 'recipes/profile.html', context)
@@ -201,23 +130,10 @@ def favorite_list(request):
 
     tags = get_tags(request)
     all_tags = Tag.objects.all()
-    if tags:
-        favorites = Recipe.objects.filter(
-            recipe_favorite__user=request.user,
-            tags__title__in=tags
-        ).distinct()
 
-    user = request.user
-    favorites_list = (
-        Favorite.objects.filter(user=user).values_list('recipe', flat=True)
+    recipes = (
+        Recipe.objects.by_tags(tags).params_for_query(request.user).filter(is_favorites=True)
     )
-
-    purchase_list = (
-        Purchase.objects.filter(user=user).values_list(
-            'recipe',
-            flat=True)
-    )
-    purchase_counter = len(purchase_list)
 
     paginator = Paginator(favorites, PER_PAGE)
     page_number = request.GET.get('page')
@@ -225,9 +141,7 @@ def favorite_list(request):
 
     context = {
         'all_tags': all_tags,
-        'purchase_counter': purchase_counter,
-        'purchase_list': purchase_list,
-        'favorite_list': favorites_list,
+        'recipes': recipes,
         'page': page,
         'paginator': paginator,
         'tags': tags,

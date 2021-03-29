@@ -1,8 +1,8 @@
-{% if recipe.id in favorite_list %}
+{% if recipe.is_favorite %}
  <button class='button button_style_none' name='favorites'>
      <span class='icon-favorite icon-favorite_active {% if single %} icon-favorite_big {% endif %}'></span>
  </button>
-{% elif recipe.id not in favorite_list %}
+{% else %}
 <button class='button button_style_none' name='favorites' data-out='true'>
     <span class='icon-favorite {% if single %} icon-favorite_big {% endif %}'></span>
 </button>
