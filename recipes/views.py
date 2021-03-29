@@ -126,16 +126,14 @@ def follow_list(request):
 
 @login_required
 def favorite_list(request):
-    favorites = Recipe.objects.filter(recipe_favorite__user=request.user)
-
     tags = get_tags(request)
     all_tags = Tag.objects.all()
 
     recipes = (
-        Recipe.objects.by_tags(tags).params_for_query(request.user).filter(is_favorites=True)
+        Recipe.objects.by_tags(tags).params_for_query(request.user).filter(is_favorite=True)
     )
 
-    paginator = Paginator(favorites, PER_PAGE)
+    paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
