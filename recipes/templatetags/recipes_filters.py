@@ -42,7 +42,7 @@ def more_recipes(author):
             value = values[2]
         return f'Еще {more} {value}'
     else:
-        return ''
+        return 'Посмотреть профиль'
 
 
 @register.simple_tag
