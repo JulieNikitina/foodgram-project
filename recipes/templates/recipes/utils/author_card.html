@@ -1,6 +1,6 @@
 {% load recipes_filters %}
 {% recipes_by author as recipes %}
-<div class='card-user' data-author={{author.id}}>
+<div class='card-user' data-author={{ author.id }}>
     <div class='card-user__header'>
         <h2 class='card-user__title'>
             {% firstof author.name author.username %}
