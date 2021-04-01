@@ -20,9 +20,7 @@
     {% else %}
         <div class='card-list'>
             {% for author in page %}
-                {% recipes_by author as recipes %}
                 {% include 'recipes/utils/author_card.html' %}
-                </div>
             {% endfor %}
         </div>
         </div>
