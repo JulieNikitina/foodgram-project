@@ -21,24 +21,7 @@
         <div class='card-list'>
             {% for author in page %}
                 {% recipes_by author as recipes %}
-                <div class='card-user' data-author={{author.id}}>
-                    <div class='card-user__header'>
-                        <h2 class='card-user__title'>
-                            {% firstof author.name author.username %}
-                        </h2>
-                    </div>
-                    <div class='card-user__body'>
-                        <ul class='card-user__items'>
-                            {% for recipe in recipes %}
-                                {% include 'recipes/utils/recipe_follow_page.html' %}
-                            {% endfor %}
-                            <li class='card-user__item'>
-                                <a href='{% url "profile" author.username %}' class='card-user__link link'>
-                                    {% more_recipes author %}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                {% include 'recipes/utils/author_card.html' %}
                     <div class='card-user__footer'>
                         <button class='button button_style_light-blue button_size_auto' name='subscribe'>
                             Отписаться

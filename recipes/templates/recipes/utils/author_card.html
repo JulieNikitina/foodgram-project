@@ -1,0 +1,12 @@
+<div class='card-user__body'>
+    <ul class='card-user__items'>
+        {% for recipe in recipes %}
+        {% include 'recipes/utils/recipe_follow_page.html' %}
+        {% endfor %}
+        <li class='card-user__item'>
+            <a href='{% url "profile" author.username %}' class='card-user__link link'>
+                {% more_recipes author %}
+            </a>
+        </li>
+    </ul>
+</div>

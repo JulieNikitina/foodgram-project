@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from cook.settings import PER_PAGE
+
 from .forms import RecipeForm
 from .models import (Favorite, Follow, Purchase, Recipe, RecipeIngredient, Tag,
                      User)
