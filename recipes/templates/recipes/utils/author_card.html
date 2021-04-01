@@ -6,7 +6,6 @@
             {% firstof author.name author.username %}
         </h2>
     </div>
-    {% include 'recipes/utils/recipe_follow_page.html' %}
     <div class='card-user__body'>
         <ul class='card-user__items'>
             {% for recipe in recipes %}
