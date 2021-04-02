@@ -25,15 +25,15 @@ class FollowViewSet(MixinSet):
         author_id = self.request.data['id']
         serializer.save(
             user=self.request.user,
-            author=User.objects.get(id=author_id)
+            author=get_object_or_404(User, id=author_id)
         )
 
     def destroy(self, request, *args, **kwargs):
         author_id = kwargs['pk']
         follow = get_object_or_404(
             Follow, user=self.request.user,
-            author=User.objects.get(id=author_id)
-        )
+            author__id=author_id)
+
         follow.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
 
