@@ -27,8 +27,7 @@
             <ul class='single-card__items'>
                 <li class='single-card__item'>
                     <p class='single-card__text'>
-                        <span class='icon-user'></span>
-                         {% firstof recipe.author.name recipe.author.username %}
+                        {% include 'recipes/components/user_icon.html' %}
                     </p>
                 </li>
                 {% if user == recipe.author %}
