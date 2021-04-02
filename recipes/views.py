@@ -88,10 +88,8 @@ def recipe_delete(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-
     tags = get_tags(request)
     all_tags = Tag.objects.all()
-
     recipes = (
         Recipe.objects.by_tags(tags)
         .params_for_query(request.user)

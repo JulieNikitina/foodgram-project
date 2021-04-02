@@ -33,7 +33,6 @@ class FollowViewSet(MixinSet):
         follow = get_object_or_404(
             Follow, user=self.request.user,
             author__id=author_id)
-
         follow.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
 
@@ -54,8 +53,7 @@ class FavoriteViewSet(MixinSet):
         favorite = get_object_or_404(
             Favorite,
             user=self.request.user,
-            recipe=Recipe.objects.get(id=recipe_id)
-        )
+            recipe__id=recipe_id)
         favorite.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
 
