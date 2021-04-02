@@ -8,10 +8,7 @@
         <h3 class='recipe__title'>
             {{ recipe.name }}
         </h3>
-        <p class='recipe__text'>
-            <span class="icon-time"></span>
-            {{ recipe.time_for_cooking }} мин.
-        </p>
+        {% include 'recipes/components/time_icon.html' %}
     </div>
     </a>
     <a href='#' class='shopping-list__button link'>

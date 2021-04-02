@@ -23,10 +23,7 @@
             {% endfor %}
         </ul>
         <div class='single-card__items single-card__items_column'>
-            <p class='single-card__text'>
-                <span class="icon-time"></span>
-                {{ recipe.time_for_cooking }} мин.
-            </p>
+            {% include 'recipes/components/time_icon.html' %}
             <ul class='single-card__items'>
                 <li class='single-card__item'>
                     <p class='single-card__text'>

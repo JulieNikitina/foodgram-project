@@ -18,10 +18,7 @@
             {% endfor %}
         </ul>
         <div class='card__items card__items_column'>
-            <p class='card__text'>
-                <span class="icon-time"></span>
-                {{ recipe.time_for_cooking }} min.
-            </p>
+            {% include 'recipes/components/time_icon.html' %}
             <p class='card__text'>
                 <span class='icon-user'></span>
                 <a href='{% url "profile" recipe.author.username %}' style='color:black'>
@@ -34,12 +31,6 @@
         {% if user.is_authenticated %}
             {% include 'recipes/components/purchase_button.html' %}
             {% include 'recipes/components/favorite_icon.html' %}
-        {% else %}
-        <a href='{% url "login" %}'>
-            <button class='button button_style_none' name='favorites' data-out>
-                <span class='icon-favorite'></span>
-            </button>
-        </a>
         {% endif %}
     </div>
 </div>
