@@ -48,7 +48,7 @@
             {% include 'recipes/components/purchase_button.html' %}
             {% if user != recipe.author %}
                 <li class='single-card__item'>
-                    {% include 'recipes/components/follow_button.html' %}
+                    {% include 'recipes/components/follow_button.html' with author=recipe.author %}
                 </li>
             {% endif %}
         </ul>
