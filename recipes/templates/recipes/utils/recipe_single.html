@@ -23,11 +23,12 @@
             {% endfor %}
         </ul>
         <div class='single-card__items single-card__items_column'>
-            {% include 'recipes/components/time_icon.html' %}
+            {% include 'recipes/components/time_icon.html' with single=True %}
             <ul class='single-card__items'>
                 <li class='single-card__item'>
                     <p class='single-card__text'>
-                        {% include 'recipes/components/user_icon.html' %}
+                        <span class='icon-user'></span>
+                         {% firstof recipe.author.name recipe.author.username %}
                     </p>
                 </li>
                 {% if user == recipe.author %}
