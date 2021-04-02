@@ -31,7 +31,7 @@
                 <li class='single-card__item'>
                     <p class='single-card__text'>
                         <span class='icon-user'></span>
-                        {{ recipe.author.name }}
+                         {% firstof recipe.author.name recipe.author.username %}
                     </p>
                 </li>
                 {% if user == recipe.author %}
