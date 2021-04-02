@@ -19,12 +19,7 @@
         </ul>
         <div class='card__items card__items_column'>
             {% include 'recipes/components/time_icon.html' %}
-            <p class='card__text'>
-                <span class='icon-user'></span>
-                <a href='{% url "profile" recipe.author.username %}' style='color:black'>
-                    {% firstof recipe.author.name recipe.author.username %}
-                </a>
-            </p>
+            {% include 'recipes/components/user_icon.html' %}
         </div>
     </div>
     <div class='card__footer'>

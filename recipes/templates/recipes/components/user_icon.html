@@ -1,0 +1,6 @@
+<p class='card__text'>
+    <span class='icon-user'></span>
+    <a href='{% url "profile" recipe.author.username %}' style='color:black'>
+        {% firstof recipe.author.name recipe.author.username %}
+    </a>
+</p>

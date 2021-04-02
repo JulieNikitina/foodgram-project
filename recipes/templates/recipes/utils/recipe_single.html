@@ -26,10 +26,7 @@
             {% include 'recipes/components/time_icon.html' %}
             <ul class='single-card__items'>
                 <li class='single-card__item'>
-                    <p class='single-card__text'>
-                        <span class='icon-user'></span>
-                         {% firstof recipe.author.name recipe.author.username %}
-                    </p>
+                   {% include 'recipes/components/user_icon.html' %}
                 </li>
                 {% if user == recipe.author %}
                 <li class='single-card__item'>
