@@ -12,11 +12,7 @@
         <form class='form' method='post' action='{% url "signup" %}'>
             {% csrf_token %}
             {% include 'users/utils/registration_form_params.html' %}
-            <div class='form__footer'>
-                <button class='button button_style_blue'>
-                    Создать аккаунт
-                </button>
-            </div>
+            {% include 'users/utils/form_footer.html' with signup=True %}
         </form>
     </div>
 {% endblock %}
