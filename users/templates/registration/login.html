@@ -12,28 +12,7 @@
     <div class='form-container'>
         <form class='form' method='post' action='{% url "login" %}'>
             {% csrf_token %}
-            <div class='form__group'>
-                <label for='id_username' class='form__label'>
-                    Имя
-                </label>
-                <div class='form__field-group'>
-                    <input type='text' name='username' id='id_username' class='form__input'>
-                    <span class='form__error'></span>
-                </div>
-            </div>
-            <div class='form__group'>
-                <label for='id_password' class='form__label'>
-                    Пароль
-                </label>
-                <div class='form__field-group'>
-                    <input type='password' name='password' id='id_password' class='form__input'>
-                    {% if form.errors %}
-                    <span class='form__error'>
-                        Имя пользователя и пароль не совпадают. Введите правильные данные.
-                    </span>
-                    {% endif %}
-                </div>
-            </div>
+             {% include 'users/utils/registration_form_params.html' %}
             <div class='form__footer'>
                 <button class='button button_style_blue'>
                     Войти

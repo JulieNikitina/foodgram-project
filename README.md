@@ -13,8 +13,8 @@ using CICD with Github actions.
 1. Prepare your server
 2. Fork repository https://github.com/JulieNikitina/foodgram-project.git
 3. Clone your repository
-4. Rename .env-example to .env and fill with your secret data.
-5. Change 12 line in settings.py (ALLOWED_HOSTS) to public IP of your server 
+4. Rename ``.env-example`` to ``.env`` and fill with your secret data.
+5. Change `ALLOWED_HOSTS` in settings.py  to public IP of your server 
 6. Create public repository for this project on https://hub.docker.com/
 7. Open foodgram-project folder and run  ```docker build -t <DockerHub_username>/<project_name> .``` 
    for build image of project
@@ -23,16 +23,16 @@ using CICD with Github actions.
     docker login -u <DockerHub_username>
     docker push <DockerHub_username>/<project_name>
   ```
-9. Change the name of the image on line 18 of the file docker-compose.yaml 
+9. Change the name of the ``image`` in block ``web`` in the file ``docker-compose.yaml ``
    to name of image <DockerHub_username>/<project_name>
-10. Change the name of the image on line 24 of the file .github/workflows/cook_workflow.yml
+10. Change the name of the image in block ``build_and_push_to_docker_hub`` in the file ``.github/workflows/cook_workflow.yml``
    to name of image <DockerHub_username>/<project_name>
 11. Go to the Settings repository in GitHub, select the Secrets tab, 
    and create secrets:
-    * with all the variables from the file .env with names: DB_HOST, DB_NAME, DB_PORT, POSTGRES_PASSWORD, POSTGRES_USER, SECRET_KEY
-    * with login and password for DockerHub with names: DOCKER_PASSWORD, DOCKER_USERNAME
-    * with settings for connecting to the server with names: HOST, SSH_KEY (private ssh key), USER
-    * with settings for send deployment progress message to Telegram with names: TELEGRAM_TO (Your telegram-ID), TELEGRAM_TOKEN (Token of your telegram-bot(get from @BotFather))
+    * with all the variables from the file ``.env`` with names: `DB_HOST`, `DB_NAME`, `DB_PORT`, `POSTGRES_PASSWORD`, `POSTGRES_USER`, `SECRET_KEY`
+    * with login and password for DockerHub with names: `DOCKER_PASSWORD`, `DOCKER_USERNAME`
+    * with settings for connecting to the server with names: `HOST`, `SSH_KEY` (private ssh key), `USER`
+    * with settings for send deployment progress message to Telegram with names: `TELEGRAM_TO` (Your telegram-ID), `TELEGRAM_TOKEN` (Token of your telegram-bot(get from @BotFather))
 12. Run commands for deploy your project
    ```
     git add .
