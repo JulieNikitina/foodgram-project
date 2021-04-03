@@ -12,15 +12,8 @@
     <div class='form-container'>
         <form class='form' method='post' action='{% url "login" %}'>
             {% csrf_token %}
-             {% include 'users/utils/registration_form_params.html' with login=True %}
-            <div class='form__footer'>
-                <button class='button button_style_blue'>
-                    Войти
-                </button>
-                <a href='{% url "password_reset" %}' class='form__forgot-link'>
-                    Забыли пароль?
-                </a>
-            </div>
+            {% include 'users/utils/registration_form_params.html' with login=True %}
+            {% include 'users/utils/form_footer.html' with login=True %}
         </form>
     </div>
 {% endblock %}

@@ -1,0 +1,18 @@
+<div class='form__footer'>
+    <button class='button button_style_blue'>
+        {% if login %}
+            Войти
+        {% elif signup %}
+            Создать аккаунт
+        {% elif password_change %}
+            Изменить пароль
+        {% elif password_reset %}
+            Сбросить пароль
+        {% endif %}
+    </button>
+    {% if login %}
+        <a href='{% url "password_reset" %}' class='form__forgot-link'>
+            Забыли пароль?
+        </a>
+    {% endif %}
+</div>
