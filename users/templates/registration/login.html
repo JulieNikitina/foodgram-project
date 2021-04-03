@@ -13,7 +13,6 @@
         <form class='form' method='post' action='{% url "login" %}'>
             {% csrf_token %}
              {% include 'users/utils/registration_form_params.html' with login=True %}
-            </div>
             <div class='form__footer'>
                 <button class='button button_style_blue'>
                     Войти
