@@ -13,15 +13,7 @@
             </div>
             {% endif %}
         </div>
-        <ul class='single-card__items'>
-            {% for tag in recipe.tags.all %}
-            <li class='single-card__item'>
-                <span class='badge badge_style_{{ tag.color }}'>
-                    {{ tag.title }}
-                </span>
-            </li>
-            {% endfor %}
-        </ul>
+       {% include 'recipes/components/tag_name.html' with single=True %}
         <div class='single-card__items single-card__items_column'>
             {% include 'recipes/components/time_icon.html' with single=True %}
             <ul class='single-card__items'>
