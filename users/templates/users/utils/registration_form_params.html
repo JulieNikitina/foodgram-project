@@ -10,14 +10,15 @@
     <div class='form__field-group'>
         {{ field|addclass:"form__input" }}
         {% if form.errors %}
-            {% for error in field.errors %}
-                <span class='form__error'>
-                    {% if login %} <span class='form__error'>
+            {% if login %} <span class='form__error'>
                         Имя пользователя и пароль не совпадают. Введите правильные данные.
                     {% else %}
+            {% for error in field.errors %}
+                <span class='form__error'>
+
                     {{ error|escape }} {% endif %}</span>
 
-        
+
             {% endfor %}
         {% endif %}
         {% if field.help_text %}
