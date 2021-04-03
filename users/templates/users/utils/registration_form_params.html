@@ -20,6 +20,7 @@
                     {{ error|escape }} </span>
             {% endfor %}
         {% endif %}
+        {% endif %}
         {% if field.help_text %}
             <small id='{{ field.id_for_label }}-help'>
                 {{ field.help_text|safe }}
