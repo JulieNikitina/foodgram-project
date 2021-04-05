@@ -29,7 +29,7 @@ def index(request):
         'paginator': paginator,
         'tags': tags}
 
-    return render(request, 'index.html', context)
+    return render(request, 'recipes/index.html', context)
 
 
 def recipe_view(request, slug):
