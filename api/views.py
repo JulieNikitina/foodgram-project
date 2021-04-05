@@ -62,7 +62,7 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('^title',)
+    search_fields = ('@title',)
 
 
 class PurchaseViewSet(MixinSet):
@@ -78,10 +78,8 @@ class PurchaseViewSet(MixinSet):
 
     def destroy(self, request, *args, **kwargs):
         recipe_id = kwargs['pk']
-        purchase = get_object_or_404(
-            Purchase,
+        purchase = Purchase.objects.get(
             user=self.request.user,
-            recipe=Recipe.objects.get(id=recipe_id)
-        )
+            recipe__id=recipe_id)
         purchase.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
