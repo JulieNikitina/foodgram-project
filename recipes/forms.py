@@ -1,7 +1,7 @@
 from django import forms
 
-from .models import Recipe, RecipeIngredient, Ingredient
-from .utils import get_ingredients, convert_ingredients
+from .models import Ingredient, Recipe, RecipeIngredient
+from .utils import convert_ingredients, get_ingredients
 
 
 class RecipeForm(forms.ModelForm):

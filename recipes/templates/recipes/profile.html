@@ -15,7 +15,7 @@
 {% block content %}
 {% csrf_token %}
 <div class='author-subscribe' data-author={{author.id}}>
-    {% if request.user.id != author.id %}
+    {% if request.user != author %}
         <p style="padding: 0 0 2em 0;">
             {% include 'recipes/components/follow_button.html' %}
         </p>
