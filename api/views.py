@@ -25,14 +25,15 @@ class FollowViewSet(MixinSet):
         author_id = self.request.data['id']
         serializer.save(
             user=self.request.user,
-            author=get_object_or_404(User, id=author_id)
+            author=User.objects.get(id=author_id)
         )
 
     def destroy(self, request, *args, **kwargs):
         author_id = kwargs['pk']
         follow = get_object_or_404(
             Follow, user=self.request.user,
-            author__id=author_id)
+            author=User.objects.get(id=author_id)
+        )
         follow.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
 
@@ -53,7 +54,8 @@ class FavoriteViewSet(MixinSet):
         favorite = get_object_or_404(
             Favorite,
             user=self.request.user,
-            recipe__id=recipe_id)
+            recipe=Recipe.objects.get(id=recipe_id)
+        )
         favorite.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
 
@@ -62,7 +64,7 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('@title',)
+    search_fields = ('^title',)
 
 
 class PurchaseViewSet(MixinSet):
@@ -78,7 +80,8 @@ class PurchaseViewSet(MixinSet):
 
     def destroy(self, request, *args, **kwargs):
         recipe_id = kwargs['pk']
-        purchase = Purchase.objects.get(
+        purchase = get_object_or_404(
+            Purchase,
             user=self.request.user,
             recipe=Recipe.objects.get(id=recipe_id)
         )
