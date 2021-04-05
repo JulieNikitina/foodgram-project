@@ -30,9 +30,9 @@ class FollowViewSet(MixinSet):
 
     def destroy(self, request, *args, **kwargs):
         author_id = kwargs['pk']
-        follow = get_object_or_404(
-            Follow, user=self.request.user,
-            author=User.objects.get(id=author_id)
+        follow = Follow.objects.get(
+            user=self.request.user,
+            author__id=author_id
         )
         follow.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
