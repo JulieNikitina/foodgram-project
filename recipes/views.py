@@ -125,7 +125,6 @@ def follow_list(request):
 
 @login_required
 def favorite_list(request):
-    print('hola')
     tags = get_tags(request)
     all_tags = Tag.objects.all()
 
