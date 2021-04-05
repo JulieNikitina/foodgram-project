@@ -51,11 +51,9 @@ class FavoriteViewSet(MixinSet):
 
     def destroy(self, request, *args, **kwargs):
         recipe_id = kwargs['pk']
-        favorite = get_object_or_404(
-            Favorite,
+        favorite = Favorite.objects.get(
             user=self.request.user,
-            recipe=Recipe.objects.get(id=recipe_id)
-        )
+            recipe__id=recipe_id)
         favorite.delete()
         return Response(data={'success': True}, status=status.HTTP_200_OK)
 
