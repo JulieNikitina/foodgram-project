@@ -14,10 +14,11 @@ class RecipeForm(forms.ModelForm):
             'time_for_cooking',
             'image'
         )
-        widgets = {'tags': forms.CheckboxSelectMultiple()}
+        widgets = {
+            'tags': forms.CheckboxSelectMultiple()}
 
-    def __init__(self, *args, kwargs):
-        super().__init__(*args, kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.ingredients = get_ingredients(self.data)
 
     def clean(self, *args, **kwargs):
@@ -32,9 +33,8 @@ class RecipeForm(forms.ModelForm):
                 return self.add_error(None, f"Ингредиента \"{ingredient['title']}\" нет.")
 
     def save(self, commit=True):
-        self.instance = super().save(commit=False)
         self.instance.author = self.request.user
-        self.instance.save()
+        self.save()
 
         RecipeIngredient.objects.filter(recipe=self.instance).delete()
         amounts = convert_ingredients(self.ingredients, self.instance)
