@@ -46,8 +46,8 @@ def recipe_view(request, slug):
 def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     if form.is_valid():
-        recipe = save_recipe(request, form)
-        return redirect('recipe_view', slug=recipe.slug)
+        form.save()
+        return redirect('index')
     return render(request, 'recipes/recipe_form.html', {'form': form}, )
 
 

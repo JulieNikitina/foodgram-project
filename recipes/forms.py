@@ -30,3 +30,22 @@ class RecipeForm(forms.ModelForm):
         for ingredient in self.ingredients:
             if not Ingredient.objects.filter(name=ingredient['title'], dimension=ingredient['dimension']):
                 return self.add_error(None, f"Ингредиента \"{ingredient['title']}\" нет.")
+
+    def save(self, commit=True):
+        self.instance = super().save(commit=False)
+        self.instance.author = self.request.user
+        self.instance.save()
+
+        RecipeIngredient.objects.filter(recipe=self.instance).delete()
+        amounts = convert_ingredients(self.ingredients, self.instance)
+
+        for name, amount, _ in self.ingredients:
+            ingredient = Ingredient.objects.get(name=name)
+            RecipeIngredient.objects.create(
+                value=amount,
+                recipe=self.instance,
+                ingredient=ingredient
+            )
+            self.instance.ingredients.add(ingredient)
+        self.save_m2m()
+        return self.instance

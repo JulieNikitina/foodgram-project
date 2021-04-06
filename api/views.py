@@ -46,7 +46,7 @@ class FavoriteViewSet(MixinSet):
         recipe_id = self.request.data['id']
         serializer.save(
             user=self.request.user,
-            recipe=Recipe.objects.get(id=recipe_id)
+            recipe=get_object_or_404(Recipe, id=recipe_id)
         )
 
     def destroy(self, request, *args, **kwargs):
@@ -73,7 +73,7 @@ class PurchaseViewSet(MixinSet):
         recipe_id = self.request.data['id']
         serializer.save(
             user=self.request.user,
-            recipe=Recipe.objects.get(id=recipe_id)
+            recipe=get_object_or_404(Recipe, id=recipe_id)
         )
 
     def destroy(self, request, *args, **kwargs):
