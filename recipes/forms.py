@@ -22,7 +22,7 @@ class RecipeForm(forms.ModelForm):
         self.ingredients = get_ingredients(self.data)
         if not self.ingredients:
             return self.add_error(None, 'Необходимо указать хотя бы один ингредиент для рецепта')
-        unique_ingredients = list({(v['title'], v['dimension']): v for v in self.ingredients}.values())
+        unique_ingredients = set(self.ingredients)
         if len(unique_ingredients) != len(self.ingredients):
             return self.add_error(None, 'Исключите дублирование ингредиентов')
         for ingredient in self.ingredients:
