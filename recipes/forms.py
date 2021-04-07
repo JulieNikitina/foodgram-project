@@ -30,6 +30,7 @@ class RecipeForm(forms.ModelForm):
                 return self.add_error(None, f"Ингредиента \"{ingredient.title}\" нет.")
 
     def save(self, commit=True):
+        self.instance = super().save(commit=False)
         self.instance.author = self.request.user
         self.save()
 
