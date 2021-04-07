@@ -19,13 +19,13 @@ class RecipeForm(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         super().clean()
-        ingredients = get_ingredients(self.data)
-        if not ingredients:
+        self.ingredients = get_ingredients(self.data)
+        if not self.ingredients:
             return self.add_error(None, 'Необходимо указать хотя бы один ингредиент для рецепта')
-        unique_ingredients = list({(v['title'], v['dimension']): v for v in ingredients}.values())
-        if len(unique_ingredients) != len(ingredients):
+        unique_ingredients = list({(v['title'], v['dimension']): v for v in self.ingredients}.values())
+        if len(unique_ingredients) != len(self.ingredients):
             return self.add_error(None, 'Исключите дублирование ингредиентов')
-        for ingredient in ingredients:
+        for ingredient in self.ingredients:
             if not Ingredient.objects.filter(name=ingredient['title'], dimension=ingredient['dimension']):
                 return self.add_error(None, f"Ингредиента \"{ingredient['title']}\" нет.")
 
