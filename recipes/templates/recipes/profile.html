@@ -16,12 +16,13 @@
 {% csrf_token %}
 <div class='author-subscribe' data-author={{author.id}}>
     {% if request.user != author %}
-        <p style="padding: 0 0 2em 0;">
-            {% include 'recipes/components/follow_button.html' %}
-        </p>
+    <p style="padding: 0 0 2em 0;">
+        {% include 'recipes/components/follow_button.html' %}
+    </p>
     {% endif %}
     <div class='card-list'>
         {% for recipe in page %}
+
             {% include 'recipes/utils/recipe_card.html' %}
         {% endfor %}
     </div>

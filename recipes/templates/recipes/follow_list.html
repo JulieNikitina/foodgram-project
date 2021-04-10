@@ -23,7 +23,6 @@
                 {% include 'recipes/utils/author_card.html' %}
             {% endfor %}
         </div>
-        </div>
     {% endif %}
     {% if page.has_other_pages %}
         {% include "utils/paginator.html" with items=page paginator=paginator%}

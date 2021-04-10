@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Sum
+from django.db.models import Sum, Exists, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -44,7 +44,7 @@ def recipe_view(request, slug):
 
 @login_required
 def new_recipe(request):
-    form = RecipeForm(request.POST or None, files=request.FILES or None)
+    form = RecipeForm(request.POST or None, files=request.FILES or None, request=request)
     if form.is_valid():
         form.save()
         return redirect('index')
@@ -88,6 +88,13 @@ def recipe_delete(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
+    is_follow = None
+    if not request.user.is_anonymous:
+        user = request.user
+        is_follow = Follow.objects.filter(
+            user=user,
+            author=author
+        ).exists()
     tags = get_tags(request)
     all_tags = Tag.objects.all()
     recipes = (
@@ -102,6 +109,7 @@ def profile(request, username):
     context = {
         'all_tags': all_tags,
         'author': author,
+        'is_follow': is_follow,
         'recipes': recipes,
         'page': page,
         'paginator': paginator,
@@ -114,12 +122,16 @@ def profile(request, username):
 def follow_list(request):
     author_list = User.objects.filter(following__user=request.user)
     paginator = Paginator(author_list, PER_PAGE)
+    print(paginator.count)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(
         request,
         'recipes/follow_list.html',
-        {'page': page, 'paginator': paginator}
+        {
+            'page': page,
+            'paginator': paginator
+        }
     )
 
 

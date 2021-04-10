@@ -20,16 +20,10 @@ def tag_color(tag_title):
 
 
 @register.simple_tag
-def recipes_by(author):
-    return Recipe.objects.filter(author=author)[:3]
-
-
-@register.simple_tag
-def more_recipes(author):
+def more_recipes(more, per_page):
     values = ['рецепт', 'рецепта', 'рецептов']
     value = ''
-    count = Recipe.objects.filter(author=author).count()
-    more = count - 3
+    more = more-per_page
     number = abs(int(more))
     a = number % 10
     b = number % 100
