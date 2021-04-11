@@ -8,7 +8,7 @@ from django.urls import reverse
 from cook.settings import PER_PAGE
 
 from .forms import RecipeForm
-from .models import Follow, Purchase, Recipe, RecipeIngredient, Tag, User
+from .models import Follow, Purchase, Recipe, RecipeIngredient, User
 from .utils import get_tags
 
 
@@ -87,7 +87,7 @@ def recipe_edit(request, slug):
     used_ingredients = recipe.amounts.all()
     edit = True
     context = {
-        'recipe':recipe,
+        'recipe': recipe,
         'edit': edit,
         'form': form,
         'used_ingredients': used_ingredients,

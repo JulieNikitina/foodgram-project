@@ -1,7 +1,6 @@
 from django import forms
 
 from .models import Ingredient, Recipe, RecipeIngredient
-from .utils import convert_ingredients
 
 
 class RecipeForm(forms.ModelForm):
@@ -53,7 +52,6 @@ class RecipeForm(forms.ModelForm):
         self.instance.save()
 
         RecipeIngredient.objects.filter(recipe=self.instance).delete()
-        amounts = convert_ingredients(self.ingredients, self.instance)
 
         for name, amount in self.ingredients.items():
             ingredient = Ingredient.objects.get(title=name)

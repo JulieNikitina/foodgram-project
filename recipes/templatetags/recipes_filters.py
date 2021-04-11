@@ -1,6 +1,6 @@
 from django import template
 
-from recipes.models import Recipe, Tag
+from recipes.models import Tag
 
 register = template.Library()
 

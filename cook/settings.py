@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -7,7 +8,7 @@ load_dotenv(ENV_FILE_PATH)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 IS_LOCAL_ENV = os.environ.get('IS_LOCAL_ENV') is not None
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
