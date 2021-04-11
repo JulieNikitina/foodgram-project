@@ -33,7 +33,9 @@
         </div>
         {% if user.is_authenticated %}
         <ul class='single-card__items'>
+            <li class='single-card__item'>
             {% include 'recipes/components/purchase_button.html' %}
+            </li>
             {% if user != recipe.author %}
                 <li class='single-card__item'>
                     {% include 'recipes/components/follow_button.html' %}

@@ -12,7 +12,8 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ('title',)
-        verbose_name = 'ингредиент'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
         return f'{self.title}, {self.dimension}'
@@ -24,7 +25,8 @@ class Tag(models.Model):
     color = models.CharField('цвет тега', max_length=50)
 
     class Meta:
-        verbose_name = 'тег'
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
 
     def __str__(self):
         return self.title
@@ -82,12 +84,17 @@ class Recipe(models.Model):
     slug = AutoSlugField(populate_from='name', allow_unicode=True, unique=True,
                          editable=True, verbose_name='slug')
     recipe_text = models.TextField('рецепт', null=False, blank=False)
-    time_for_cooking = models.PositiveSmallIntegerField('время приготовления')
+    time_for_cooking = models.PositiveSmallIntegerField(
+        'время приготовления',
+        validators=[MinValueValidator(1, 'Так быстро не готовит даже Флэш')]
+    )
     pub_date = models.DateTimeField('date published', auto_now_add=True)
     objects = RecipeCustomQuerySet.as_manager()
 
     class Meta:
         ordering = ['-pub_date']
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
 
     def __str__(self):
         return f'{self.name}: {self.recipe_text[0:10]}'
@@ -104,14 +111,14 @@ class RecipeIngredient(models.Model):
         on_delete=models.CASCADE,
         related_name='amounts'
     )
-    quantity = models.DecimalField(
-        max_digits=6,
-        decimal_places=1,
-        validators=[MinValueValidator(1)]
+    quantity = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1, 'Значение должно быть больше нуля')]
     )
 
     class Meta:
         unique_together = ('recipe', 'ingredient')
+        verbose_name = 'Ингредиенты рецепта'
+        verbose_name_plural = 'Ингредиенты рецептов'
 
     def __str__(self):
         return f'{self.recipe}:{self.ingredient}'
@@ -130,6 +137,8 @@ class Follow(models.Model):
 
     class Meta:
         unique_together = ['user', 'author']
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
 
     def __str__(self):
         return f'{self.user}:{self.author}'
@@ -149,6 +158,8 @@ class Favorite(models.Model):
 
     class Meta:
         unique_together = ['user', 'recipe']
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
 
     def __str__(self):
         return f'{self.user}:{self.recipe}'
@@ -168,5 +179,5 @@ class Purchase(models.Model):
 
     class Meta:
         unique_together = ['user', 'recipe']
-
-
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Список покупок'

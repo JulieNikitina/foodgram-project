@@ -1,8 +1,11 @@
 version: '3.3'
+
 volumes:
   postgres_data:
   static-container:
+
 services:
+
   db:
     image: postgres:12.4
     volumes:
@@ -14,6 +17,7 @@ services:
       timeout: 10s
       interval: 1s
       retries: 10
+
   web:
     image: julienikitina/lacomida
     restart: always

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Sum, Exists, OuterRef
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -8,14 +8,13 @@ from django.urls import reverse
 from cook.settings import PER_PAGE
 
 from .forms import RecipeForm
-from .models import (Favorite, Follow, Purchase, Recipe, RecipeIngredient, Tag,
-                     User)
-from .utils import get_tags, save_recipe
+from .models import Follow, Purchase, Recipe, RecipeIngredient, Tag, User
+from .utils import get_tags
 
 
 def index(request):
     tags = get_tags(request)
-    all_tags = Tag.objects.all()
+
     recipes = Recipe.objects.by_tags(tags).params_for_query(request.user)
 
     paginator = Paginator(recipes, PER_PAGE)
@@ -23,7 +22,7 @@ def index(request):
     page = paginator.get_page(page_number)
 
     context = {
-        'all_tags': all_tags,
+
         'recipes': recipes,
         'page': page,
         'paginator': paginator,
@@ -33,9 +32,22 @@ def index(request):
 
 
 def recipe_view(request, slug):
-    recipe = get_object_or_404(Recipe.objects.params_for_query(request.user), slug=slug)
+    recipe = get_object_or_404(
+        Recipe.objects.params_for_query(request.user),
+        slug=slug
+    )
+    is_follow = None
+    if not request.user.is_anonymous:
+        user = request.user
+        is_follow = Follow.objects.filter(
+            user=user,
+            author=recipe.author
+        ).exists()
 
-    context = {'recipe': recipe}
+    context = {
+        'is_follow': is_follow,
+        'recipe': recipe
+    }
     return render(
         request,
         'recipes/recipe.html',
@@ -44,7 +56,11 @@ def recipe_view(request, slug):
 
 @login_required
 def new_recipe(request):
-    form = RecipeForm(request.POST or None, files=request.FILES or None, request=request)
+    form = RecipeForm(
+        request.POST or None,
+        files=request.FILES or None,
+        request=request
+    )
     if form.is_valid():
         form.save()
         return redirect('index')
@@ -62,15 +78,16 @@ def recipe_edit(request, slug):
     form = RecipeForm(
         request.POST or None,
         files=request.FILES or None,
-        instance=recipe
+        instance=recipe,
+        request=request
     )
     if form.is_valid():
-        recipe.amounts.all().delete()
-        save_recipe(request, form)
+        form.save()
         return redirect(url)
     used_ingredients = recipe.amounts.all()
     edit = True
     context = {
+        'recipe':recipe,
         'edit': edit,
         'form': form,
         'used_ingredients': used_ingredients,
@@ -96,9 +113,9 @@ def profile(request, username):
             author=author
         ).exists()
     tags = get_tags(request)
-    all_tags = Tag.objects.all()
     recipes = (
-        Recipe.objects.by_tags(tags)
+        Recipe.objects
+        .by_tags(tags)
         .params_for_query(request.user)
         .filter(author=author)
     )
@@ -107,7 +124,6 @@ def profile(request, username):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     context = {
-        'all_tags': all_tags,
         'author': author,
         'is_follow': is_follow,
         'recipes': recipes,
@@ -122,7 +138,6 @@ def profile(request, username):
 def follow_list(request):
     author_list = User.objects.filter(following__user=request.user)
     paginator = Paginator(author_list, PER_PAGE)
-    print(paginator.count)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(
@@ -138,10 +153,11 @@ def follow_list(request):
 @login_required
 def favorite_list(request):
     tags = get_tags(request)
-    all_tags = Tag.objects.all()
-
     recipes = (
-        Recipe.objects.by_tags(tags).params_for_query(request.user).filter(is_favorite=True)
+        Recipe.objects
+        .by_tags(tags)
+        .params_for_query(request.user)
+        .filter(is_favorite=True)
     )
 
     paginator = Paginator(recipes, PER_PAGE)
@@ -149,7 +165,6 @@ def favorite_list(request):
     page = paginator.get_page(page_number)
 
     context = {
-        'all_tags': all_tags,
         'recipes': recipes,
         'page': page,
         'paginator': paginator,
@@ -162,10 +177,8 @@ def purchase_list(request):
     user = request.user
     cart = Purchase.objects.filter(user=user)
     recipes = Recipe.objects.filter(shopping_list__in=cart)
-    purchase_counter = len(recipes)
 
     context = {
-        'purchase_counter': purchase_counter,
         'purchase_list': cart,
         'recipes': recipes,
     }
@@ -174,26 +187,27 @@ def purchase_list(request):
 
 @login_required
 def download_purchase_list(request):
-    purchase_list = (RecipeIngredient.objects
-                     .filter(recipe__shopping_list__user=request.user)
-                     .values('ingredient__title', 'ingredient__dimension')
-                     .annotate(Sum('quantity')))
+    purchase_list = (
+        RecipeIngredient.objects
+        .filter(recipe__shopping_list__user=request.user)
+        .values('ingredient__title', 'ingredient__dimension')
+        .annotate(Sum('quantity'))
+    )
     result = []
-    file_data = ''
     if purchase_list:
         for ingredient in purchase_list:
             item = (f'{ingredient["ingredient__title"]} '
                     f'{ingredient["quantity__sum"]} '
                     f'{ingredient["ingredient__dimension"]}')
             result.append(item)
-        file_data = '\n'.join(result)
+        file_data = '\r\n'.join(result)
 
         response = HttpResponse(
             file_data,
             content_type='application/text charset=utf-8'
         )
-        response['Content-Disposition'] = ('attachment; '
-                                           'filename="purchase_list.txt"')
+        response['Content-Disposition'] = 'attachment; ' \
+                                          'filename="purchase_list.txt"'
         return response
     return redirect('index')
 

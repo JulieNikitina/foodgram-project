@@ -4,6 +4,10 @@ from .models import (Favorite, Follow, Ingredient, Purchase, Recipe,
                      RecipeIngredient, Tag)
 
 
+class RecipeIngredientInline(admin.TabularInline):
+    model = RecipeIngredient
+
+
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         'pk',
@@ -14,6 +18,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'recipe_text',
         'time_for_cooking'
     )
+    inlines = (RecipeIngredientInline,)
     list_filter = ('pub_date', 'author', 'name',)
     empty_value_display = '-пусто-'
 

@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Ingredient, Recipe, RecipeIngredient
-from .utils import convert_ingredients, get_ingredients
+from .utils import convert_ingredients
 
 
 class RecipeForm(forms.ModelForm):
@@ -31,12 +31,21 @@ class RecipeForm(forms.ModelForm):
                     value = key.replace('name', 'value')
                     self.ingredients[name] = self.data[value]
             else:
-                self.add_error(None, 'Исключите дублирование ингредиентов')
+                self.add_error(
+                    None,
+                    'Исключите дублирование ингредиентов'
+                )
         if not self.ingredients:
-            return self.add_error(None, 'Чтобы сварить кашу, нужен хотя бы топор! Добавь ингредиент')
+            return self.add_error(
+                None,
+                'Чтобы сварить кашу, нужен хотя бы топор! Добавь ингредиент'
+            )
         for ingredient in self.ingredients:
             if not Ingredient.objects.filter(title=ingredient):
-                return self.add_error(None, f"Ингредиента \"{ingredient}\" нет.")
+                return self.add_error(
+                    None,
+                    f"Ингредиента \"{ingredient}\" нет."
+                )
 
     def save(self, commit=True):
         self.instance = super().save(commit=False)
