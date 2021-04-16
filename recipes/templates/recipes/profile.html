@@ -22,13 +22,9 @@
     {% endif %}
     <div class='card-list'>
         {% for recipe in page %}
-
             {% include 'recipes/utils/recipe_card.html' %}
         {% endfor %}
     </div>
-    {% if page.has_other_pages %}
-        {% include "utils/paginator.html" with items=page paginator=paginator %}
-    {% endif %}
 </div>
 {% endblock %}
 {% block scripts %}

@@ -15,17 +15,13 @@
                 {% include 'recipes/utils/recipe_purchase_list.html' %}
             {% endfor %}
         </ul>
-        {% if purchase_list|length == 0 %}
+        {% if purchase_list.count == 0 %}
         <a href='{% url "index" %}'>
-            <button class='button button_style_blue'>
-                Добавить покупки
-            </button>
+              {% include 'recipes/components/footer_button.html' with purchase_list=True %}
         </a>
         {% else %}
         <a href='{% url "download_purchase_list" %}'>
-            <button onClick='window.location.reload();' class='button button_style_blue'>
-                Скачать список
-            </button>
+            {% include 'recipes/components/footer_button.html' with purchase_list_download=True %}
         </a>
         {% endif %}
     </div>

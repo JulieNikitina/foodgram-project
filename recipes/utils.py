@@ -1,25 +1,8 @@
 from decimal import Decimal
 
-from django.db import IntegrityError, transaction
-from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 
 from recipes.models import Ingredient, RecipeIngredient
-
-
-def save_recipe(request, form):
-    try:
-        with transaction.atomic():
-            recipe = form.save(commit=False)
-            recipe.author = request.user
-            recipe.save()
-            ingredients = get_ingredients(request.POST)
-            amounts = convert_ingredients(ingredients, recipe)
-            RecipeIngredient.objects.bulk_create(amounts)
-            form.save_m2m()
-            return recipe
-    except IntegrityError:
-        raise HttpResponseBadRequest
 
 
 def get_ingredients(post):

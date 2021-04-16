@@ -1,4 +1,4 @@
-<p class={% if single %}'single-card__text' {% else %}'card__text'{% endif %} >
+<p class={{ single|yesno:'single-card__text,card__text' }} >
     <span class="icon-time"></span>
-    {{ recipe.time_for_cooking }} min.
+    {{ recipe.time_for_cooking }} мин.
 </p>

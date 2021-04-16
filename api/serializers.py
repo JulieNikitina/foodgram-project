@@ -6,7 +6,7 @@ from recipes.models import Favorite, Follow, Ingredient, Purchase, User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id',)
 
 
 class IngredientSerializer(serializers.ModelSerializer):

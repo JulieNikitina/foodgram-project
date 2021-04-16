@@ -30,6 +30,9 @@
     {% block content %}
     <!-- Содержимое страницы -->
     {% endblock content %}
+    {% if page.has_other_pages %}
+    {% include 'utils/paginator.html' with items=page paginator=page.paginator %}
+    {% endif %}
 </main>
 {% include 'utils/footer.html' %}
 {% block scripts %}

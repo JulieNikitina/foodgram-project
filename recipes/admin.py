@@ -6,6 +6,7 @@ from .models import (Favorite, Follow, Ingredient, Purchase, Recipe,
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
+    min_num = 1
 
 
 class RecipeAdmin(admin.ModelAdmin):

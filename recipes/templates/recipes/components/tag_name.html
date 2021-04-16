@@ -1,6 +1,6 @@
-<ul class={% if single %}'single-card__items'{% else %}'card__items'{% endif %}>
+<ul class={{ single|yesno:"single-card__items,card__items"}}>
     {% for tag in recipe.tags.all %}
-        <li class={% if single %}'single-card__item'{% else %}'card__item'{% endif %}>
+        <li class={{ single|yesno:"single-card__item,card__item"}}>
             <span class='badge badge_style_{{ tag.color }}'>
                 {{ tag.title }}
             </span>

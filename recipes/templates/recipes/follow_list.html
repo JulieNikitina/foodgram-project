@@ -11,7 +11,7 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
-    {% if paginator.count == 0 %}
+    {% if page.paginator.count == 0 %}
         <div class='custom-center-block'>
             <p class='custom-text-block'>
                 Вы ни на кого не подписаны
@@ -24,9 +24,7 @@
             {% endfor %}
         </div>
     {% endif %}
-    {% if page.has_other_pages %}
-        {% include "utils/paginator.html" with items=page paginator=paginator%}
-    {% endif %}
+
 {% endblock %}
 {% block scripts %}
     <script src='{% static "js/config/config.js" %}'></script>

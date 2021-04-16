@@ -16,11 +16,6 @@ class RecipeForm(forms.ModelForm):
         widgets = {
             'tags': forms.CheckboxSelectMultiple()}
 
-    def __init__(self, *args, **kwargs):
-        request = kwargs.pop('request')
-        super().__init__(*args, **kwargs)
-        self.request = request
-
     def clean(self, *args, **kwargs):
         super().clean()
         self.ingredients = {}
@@ -32,23 +27,22 @@ class RecipeForm(forms.ModelForm):
             else:
                 self.add_error(
                     None,
-                    'Исключите дублирование ингредиентов'
+                    'Исключите дублирование ингредиентов.'
                 )
         if not self.ingredients:
             return self.add_error(
                 None,
-                'Чтобы сварить кашу, нужен хотя бы топор! Добавь ингредиент'
+                'Чтобы сварить кашу, нужен хотя бы топор! Добавь ингредиент.'
             )
         for ingredient in self.ingredients:
             if not Ingredient.objects.filter(title=ingredient):
                 return self.add_error(
                     None,
-                    f"Ингредиента \"{ingredient}\" нет."
+                    f'Ингредиента "{ingredient}" нет.'
                 )
 
     def save(self, commit=True):
         self.instance = super().save(commit=False)
-        self.instance.author = self.request.user
         self.instance.save()
 
         RecipeIngredient.objects.filter(recipe=self.instance).delete()

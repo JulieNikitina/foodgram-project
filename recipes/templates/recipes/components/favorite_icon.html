@@ -1,12 +1,14 @@
 {% if recipe.is_favorite %}
- <button class='button button_style_none' name='favorites' {% if not recipe.is_favorite %} data-out='true'{% endif %}>
-     <span class='icon-favorite icon-favorite_active {% if single %} icon-favorite_big {% endif %}'></span>
+ <button class='button button_style_none' name='favorites' {{ recipe.is_favorite|yesno:",data-out='true'" }}>
+     <span class='icon-favorite icon-favorite_active {{ single|yesno:"icon-favorite_big,"}}'></span>
  </button>
 {% else %}
 <button class='button button_style_none' name='favorites' data-out='true'>
-    <span class='icon-favorite {% if single %} icon-favorite_big {% endif %}'></span>
+    <span class='icon-favorite {{ single|yesno:"icon-favorite_big,"}}'></span>
 </button>
 {% if single %}
-<div class="single-card__favorite-tooltip tooltip"> Добавить в избранное</div>
+<div class="single-card__favorite-tooltip tooltip">
+    {{ recipe.is_favorite|yesno:'Убрать из избранного,Добавить в избранное' }}
+</div>
 {% endif %}
 {% endif %}

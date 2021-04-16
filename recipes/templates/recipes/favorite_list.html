@@ -12,7 +12,7 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
-    {% if paginator.count == 0 %}
+    {% if page.paginator.count == 0 %}
         <div class='custom-center-block'>
             <p class='custom-text-block'> У вас нет избранных рецептов </p>
         </div>
@@ -22,9 +22,7 @@
             {% include "recipes/utils/recipe_card.html" %}
         {% endfor %}
     </div>
-    {% if page.has_other_pages %}
-    {% include 'utils/paginator.html' with items=page paginator=paginator %}
-    {% endif %}
+
     {% endif %}
 {% endblock %}
 {% block scripts %}

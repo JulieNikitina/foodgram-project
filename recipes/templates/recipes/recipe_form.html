@@ -61,8 +61,8 @@
                     <input type='number' id='cantidad' class='form__input' min='0'>
                     <label for='cantidad' class='form__label' id='cantidadVal'> единицы измерения </label>
                 </div>
+                <span class='form__ingredient-link' id='addIng'>Добавить ингредиент</span>
                 <div class='form__field-group-ingredientes-container'>
-                    <span class='form__ingredient-link' id='addIng'>Добавить ингредиент</span>
                     {% for ingredient in used_ingredients %}
                     <div class='form__field-item-ingredient' id='ing_{{ forloop.counter }}'>
                         <span> {{ ingredient.ingredient.title }} {{ ingredient.quantity }} {{ ingredient.ingredient.dimension }}</span>
@@ -132,7 +132,7 @@
         <div class='form__footer'>
             <button class='button button_style_blue'>Сохранить</button>
             {% if edit %}
-            <a style='margin-left: 2.5em' href='{{ request.get_full_path }}/delete/' class='form__ingredient-link'>
+            <a style='margin-left: 2.5em' href='{% url "recipe_delete" recipe.slug %}' class='form__ingredient-link'>
                 Удалить
             </a>
             {% endif %}

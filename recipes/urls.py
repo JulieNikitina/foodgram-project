@@ -7,9 +7,9 @@ urlpatterns = [
     path('new/', views.new_recipe, name='new_recipe'),
     path('<slug:slug>/edit', views.recipe_edit, name='recipe_edit'),
     path(
-        '<slug:slug>/edit/delete/', views.recipe_delete, name='recipe_delete'
+        '<slug:slug>/delete/', views.recipe_delete, name='recipe_delete'
     ),
-    path('<slug:slug>', views.recipe_view, name='recipe_view'),
+    path('recipes/<slug:slug>/', views.recipe_view, name='recipe_view'),
     path('follow/', views.follow_list, name='follow_list'),
     path('favorite/', views.favorite_list, name='favorite_list'),
     path('purchase_list/', views.purchase_list, name='purchase_list'),

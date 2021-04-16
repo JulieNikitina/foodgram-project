@@ -2,13 +2,13 @@
 <button class='button button_style_light-blue button_size_auto' name='subscribe'>
     Отписаться
 </button>
-{% elif purchase_list %}
-<button class='button button_style_blue'>
-    Добавить покупки
-</button>
 {% elif purchase_list_download %}
 <button onClick='window.location.reload();' class='button button_style_blue'>
     Скачать список
+</button>
+{% else %}
+<button class='button button_style_blue'>
+    Добавить покупки
 </button>
 {% endif %}
 

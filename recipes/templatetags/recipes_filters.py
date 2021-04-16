@@ -32,11 +32,9 @@ def more_recipes(more, per_page):
             value = values[0]
         elif (a >= 2) and (a <= 4) and ((b < 10) or (b >= 20)):
             value = values[1]
-        else:
-            value = values[2]
+        value = values[2]
         return f'Еще {more} {value}'
-    else:
-        return 'Посмотреть профиль'
+    return 'Посмотреть профиль'
 
 
 @register.simple_tag
@@ -59,11 +57,6 @@ def remove_get_params(request, tags=None, param=''):
         else:
             return f'{params_page[0]}'
     return f'?{params}'
-
-
-@register.simple_tag
-def cart_counter(user):
-    return user.shopping_list.count()
 
 
 @register.simple_tag

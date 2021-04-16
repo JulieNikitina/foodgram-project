@@ -14,9 +14,7 @@ from .utils import get_tags
 
 def index(request):
     tags = get_tags(request)
-
     recipes = Recipe.objects.by_tags(tags).params_for_query(request.user)
-
     paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -25,8 +23,7 @@ def index(request):
 
         'recipes': recipes,
         'page': page,
-        'paginator': paginator,
-        'tags': tags}
+    }
 
     return render(request, 'recipes/index.html', context)
 
@@ -59,9 +56,9 @@ def new_recipe(request):
     form = RecipeForm(
         request.POST or None,
         files=request.FILES or None,
-        request=request
     )
     if form.is_valid():
+        form.instance.author = request.user
         form.save()
         return redirect('index')
     return render(request, 'recipes/recipe_form.html', {'form': form}, )
@@ -79,7 +76,6 @@ def recipe_edit(request, slug):
         request.POST or None,
         files=request.FILES or None,
         instance=recipe,
-        request=request
     )
     if form.is_valid():
         form.save()
@@ -113,13 +109,7 @@ def profile(request, username):
             author=author
         ).exists()
     tags = get_tags(request)
-    recipes = (
-        Recipe.objects
-        .by_tags(tags)
-        .params_for_query(request.user)
-        .filter(author=author)
-    )
-
+    recipes = author.recipes.by_tags(tags)
     paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -128,8 +118,6 @@ def profile(request, username):
         'is_follow': is_follow,
         'recipes': recipes,
         'page': page,
-        'paginator': paginator,
-        'tags': tags,
     }
     return render(request, 'recipes/profile.html', context)
 
@@ -143,10 +131,7 @@ def follow_list(request):
     return render(
         request,
         'recipes/follow_list.html',
-        {
-            'page': page,
-            'paginator': paginator
-        }
+        {'page': page, }
     )
 
 
@@ -167,8 +152,6 @@ def favorite_list(request):
     context = {
         'recipes': recipes,
         'page': page,
-        'paginator': paginator,
-        'tags': tags,
     }
     return render(request, 'recipes/favorite_list.html', context)
 
@@ -206,8 +189,9 @@ def download_purchase_list(request):
             file_data,
             content_type='application/text charset=utf-8'
         )
-        response['Content-Disposition'] = 'attachment; ' \
-                                          'filename="purchase_list.txt"'
+        response['Content-Disposition'] = (
+            'attachment; filename="purchase_list.txt"'
+        )
         return response
     return redirect('index')
 

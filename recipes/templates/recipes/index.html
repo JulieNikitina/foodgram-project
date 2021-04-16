@@ -18,9 +18,7 @@
             {% include "recipes/utils/recipe_card.html" %}
         {% endfor %}
     </div>
-    {% if page.has_other_pages %}
-        {% include "utils/paginator.html" with items=page paginator=paginator%}
-    {% endif %}
+
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/components/MainCards.js'%}"></script>
@@ -38,7 +36,3 @@
         <script src="{% static 'yp/indexNotAuth.js'%}"></script>
     {% endif %}
 {% endblock scripts %}
-
-
-
-

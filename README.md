@@ -13,7 +13,7 @@ using CICD with Github actions.
 1. Prepare your server
 2. Fork repository https://github.com/JulieNikitina/foodgram-project.git
 3. Clone your repository
-4. Rename ``.env-example`` to ``.env`` and fill with your secret data.
+4. Rename ``.env.example`` to ``.env`` and fill with your secret data.
 5. Change `ALLOWED_HOSTS` in settings.py  to public IP of your server 
 6. Create public repository for this project on https://hub.docker.com/
 7. Open foodgram-project folder and run  ```docker build -t <DockerHub_username>/<project_name> .``` 
@@ -45,9 +45,8 @@ using CICD with Github actions.
 1. Сonnect to your server
 2. Run the command ```sudo docker-container ls``` for get CONTAINER ID of IMAGE of your project
 3. Run ``` sudo docker exec -it <CONTAINER ID> bash```. Use CONTEINER ID from the previous paragraph 
-4. Run ```python manage.py makemigrations```
-5. Run ```python manage.py migrate```
-6. Run ```python manage.py collectstatic -y```
+4. Run ```python manage.py migrate```
+5. Run ```python manage.py collectstatic -y```
 6. To load data, run ```python manage.py load_ingredients```
 7. Run ```python manage.py createsuperuser```. Create and enter Username and Password for admin user
 8. Go to <your_IP>/admin for use an admin panel and create tags objects
