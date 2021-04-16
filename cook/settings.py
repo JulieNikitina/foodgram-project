@@ -10,7 +10,7 @@ ENV_FILE_PATH = os.path.join(
 )
 load_dotenv(ENV_FILE_PATH)
 SECRET_KEY = os.environ['SECRET_KEY']
-IS_LOCAL_ENV = os.environ['IS_LOCAL_ENV'] is not None
+IS_LOCAL_ENV = os.environ.get('IS_LOCAL_ENV') is not None
 
 DEBUG = False
 
