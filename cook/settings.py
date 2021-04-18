@@ -12,7 +12,7 @@ load_dotenv(ENV_FILE_PATH)
 SECRET_KEY = os.environ['SECRET_KEY']
 IS_LOCAL_ENV = os.environ.get('IS_LOCAL_ENV') is not None
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
