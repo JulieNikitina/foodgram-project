@@ -1,16 +1,8 @@
 import os
 
-from dotenv import load_dotenv
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ENV_FILE_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    '..',
-    '.env'
-)
-load_dotenv(ENV_FILE_PATH)
-SECRET_KEY = os.environ['SECRET_KEY']
-IS_LOCAL_ENV = os.environ.get('IS_LOCAL_ENV') is not None
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 
@@ -63,8 +55,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'recipes.context_processor.all_tags',
-                'recipes.context_processor.tags',
             ],
         },
     },
@@ -72,24 +62,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cook.wsgi.application'
 
-if IS_LOCAL_ENV:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['DB_NAME'],
-            'USER': os.environ['POSTGRES_USER'],
-            'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-            'HOST': os.environ['DB_HOST'],
-            'PORT': os.environ['DB_PORT'],
-        }
-    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -112,7 +94,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'Asia/Irkutsk'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
