@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 class Ingredient(models.Model):
-    title = models.TextField('наименование ингредиента', max_length=150)
+    title = models.CharField('наименование ингредиента', max_length=150)
     dimension = models.TextField('единицы измерения', max_length=10)
 
     class Meta:
