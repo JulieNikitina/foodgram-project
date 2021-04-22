@@ -73,6 +73,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd configs/
+            sudo docker-compose
             sudo docker-compose pull
             sudo docker-compose up -d
 
