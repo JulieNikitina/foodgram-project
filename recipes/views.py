@@ -17,8 +17,15 @@ def index(request):
     recipes = Recipe.objects.by_tags(tags).params_for_query(request.user)
     paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
+    if page_number:
+        if int(page_number) > paginator.num_pages:
+            return render(
+                request,
+                'misc/404.html',
+                {'path': request.path},
+                status=404
+            )
     page = paginator.get_page(page_number)
-
     context = {
 
         'recipes': recipes,
@@ -113,6 +120,14 @@ def profile(request, username):
     paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+    if page_number:
+        if int(page_number) > paginator.num_pages:
+            return render(
+                request,
+                'misc/404.html',
+                {'path': request.path},
+                status=404
+            )
     context = {
         'author': author,
         'is_follow': is_follow,
@@ -128,6 +143,14 @@ def follow_list(request):
     paginator = Paginator(author_list, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+    if page_number:
+        if int(page_number) > paginator.num_pages:
+            return render(
+                request,
+                'misc/404.html',
+                {'path': request.path},
+                status=404
+            )
     return render(
         request,
         'recipes/follow_list.html',
@@ -148,6 +171,14 @@ def favorite_list(request):
     paginator = Paginator(recipes, PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+    if page_number:
+        if int(page_number) > paginator.num_pages:
+            return render(
+                request,
+                'misc/404.html',
+                {'path': request.path},
+                status=404
+            )
 
     context = {
         'recipes': recipes,

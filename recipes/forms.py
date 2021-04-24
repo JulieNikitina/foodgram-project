@@ -49,6 +49,7 @@ class RecipeForm(forms.ModelForm):
 
         for name, amount in self.ingredients.items():
             ingredient = Ingredient.objects.get(title=name)
+            print(ingredient)
             RecipeIngredient.objects.create(
                 quantity=amount,
                 recipe=self.instance,

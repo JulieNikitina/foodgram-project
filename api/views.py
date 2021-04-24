@@ -62,7 +62,7 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('@title',)
+    search_fields = ('^title',)
 
 
 class PurchaseViewSet(MixinSet):

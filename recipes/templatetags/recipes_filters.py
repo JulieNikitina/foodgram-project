@@ -32,7 +32,8 @@ def more_recipes(more, per_page):
             value = values[0]
         elif (a >= 2) and (a <= 4) and ((b < 10) or (b >= 20)):
             value = values[1]
-        value = values[2]
+        else:
+            value = values[2]
         return f'Еще {more} {value}'
     return 'Посмотреть профиль'
 
